@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import styles from "@styles/componentStyles/Objective.module.css";
+import { LuPencil } from "react-icons/lu";
+import { HiPlusSm } from "react-icons/hi";
+import styles from "@styles/componentStyles/home/Objective.module.scss";
 interface GrandObjective {
     id: number;
     grandObject: string;
@@ -56,7 +58,13 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                 <div className={styles.ObjectiveWrap}>
                     {Objective === "grand" ? (
                         <>
-                            <h2>大目標</h2>
+                            <div className={styles.ObjectiveHeader}>
+                                <h2>大目標</h2>
+                                <div className={styles.ObjectiveButton}>
+                                    <LuPencil />
+                                    <HiPlusSm />
+                                </div>
+                            </div>
                             {grandObjectives.length > 0 ? (
                                 grandObjectives.map((objective) => (
                                     <div key={objective.id}>{objective.grandObject}</div>
@@ -67,7 +75,13 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                         </>
                     ) : (
                         <>
-                            <h2>週目標</h2>
+                            <div className={styles.ObjectiveHeader}>
+                                <h2>週目標</h2>
+                                <div className={styles.ObjectiveButton}>
+                                    <LuPencil />
+                                    <HiPlusSm />
+                                </div>
+                            </div>
                             {weekObjectives.length > 0 ? (
                                 weekObjectives.map((objective) => (
                                     <div key={objective.id}>{objective.weekObject}</div>
