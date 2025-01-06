@@ -62,7 +62,7 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                                 <h2>大目標</h2>
                                 <div className={styles.ObjectiveButton}>
                                     <LuPencil />
-                                    <HiPlusSm />
+                                    <HiPlusSm size="20px" />
                                 </div>
                             </div>
                             {grandObjectives.length > 0 ? (
@@ -79,7 +79,7 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                                 <h2>週目標</h2>
                                 <div className={styles.ObjectiveButton}>
                                     <LuPencil />
-                                    <HiPlusSm />
+                                    <HiPlusSm size="20px" />
                                 </div>
                             </div>
                             {weekObjectives.length > 0 ? (

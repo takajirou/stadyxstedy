@@ -2,4 +2,19 @@
     border: 1px solid #000;
     border-radius: 6px;
     margin: 22px 0;
+    padding: 0 10px;
+    .ObjectiveHeader {
+        display: flex;
+        justify-content: space-between;
+        margin: 5px 0;
+        padding: 0 0 5px;
+        border-bottom: 1px solid #000;
+        h2 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.4rem;
+            font-weight: normal;
+        }
+    }
 }
