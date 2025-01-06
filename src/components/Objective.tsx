@@ -62,12 +62,14 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                                 <h2>大目標</h2>
                                 <div className={styles.ObjectiveButton}>
                                     <LuPencil />
-                                    <HiPlusSm size="20px" />
+                                    <HiPlusSm size="30px" />
                                 </div>
                             </div>
                             {grandObjectives.length > 0 ? (
                                 grandObjectives.map((objective) => (
-                                    <div key={objective.id}>{objective.grandObject}</div>
+                                    <div key={objective.id}>
+                                        <p>{objective.grandObject}</p>
+                                    </div>
                                 ))
                             ) : (
                                 <p>目標がまだ設定されていません。新しい目標を追加してください。</p>
@@ -79,12 +81,14 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                                 <h2>週目標</h2>
                                 <div className={styles.ObjectiveButton}>
                                     <LuPencil />
-                                    <HiPlusSm size="20px" />
+                                    <HiPlusSm size="30px" />
                                 </div>
                             </div>
                             {weekObjectives.length > 0 ? (
                                 weekObjectives.map((objective) => (
-                                    <div key={objective.id}>{objective.weekObject}</div>
+                                    <div key={objective.id} className={styles.Objective}>
+                                        <p>{objective.weekObject}</p>
+                                    </div>
                                 ))
                             ) : (
                                 <p>
