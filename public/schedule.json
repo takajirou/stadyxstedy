@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "object": "レッスン4まで見る",
+        "studyTime": 1,
+        "breakTime": 10,
+        "breakCount": 3,
+        "studyContent": "udemyを視聴し、学習内容をメモする。",
+        "date": "2024-12-31",
+        "state": "finished"
+    },
+    {
+        "id": 2,
+        "object": "レッスン5まで見る",
+        "studyTime": 1,
+        "breakTime": 10,
+        "breakCount": 3,
+        "studyContent": "udemyを視聴し、学習内容をメモする。",
+        "date": "2025-01-01",
+        "state": "unfinished"
+    }
+]

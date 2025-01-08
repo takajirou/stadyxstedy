@@ -1,0 +1,59 @@
+.ScheduleWrap {
+    h2 {
+        font-size: 1.8rem;
+        font-weight: normal;
+    }
+    .ScheduleContents {
+        background-color: #fff;
+        border: 1px solid #000;
+        border-radius: 6px;
+        padding: 10px 10px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 40px 40px 140px 40px;
+        gap: 15px;
+        h2 {
+            font-size: 1.2rem;
+        }
+        p {
+            font-size: 1.4rem;
+            border-bottom: 1px solid #000;
+        }
+        .ScheduleTarget {
+            grid-column: 1 / 3;
+            grid-row: 1 / 2;
+        }
+        .StudyTime {
+            grid-column: 1 / 2;
+            grid-row: 2 / 3;
+        }
+        .BreakTime {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+        }
+        .StudyContent {
+            grid-column: 1 / 3;
+            grid-row: 3 / 4;
+            textarea {
+                resize: none;
+                border-radius: 6px;
+                border: 1px solid #000;
+                width: 100%;
+                height: 120px;
+                padding: 5px;
+            }
+        }
+        button {
+            border-radius: 6px;
+            border: 1px solid #000;
+            grid-column: 1 / 3;
+            grid-row: 4 / 5;
+            width: 30%;
+            margin: 0 auto;
+            p {
+                border: none;
+                font-size: 1.6rem;
+            }
+        }
+    }
+}
