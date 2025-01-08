@@ -1,0 +1,13 @@
+.DayCounterWrap {
+    border: solid 1px #000;
+    border-radius: 6px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    background-color: #fff;
+    h1 {
+        font-size: 3rem;
+    }
+}
