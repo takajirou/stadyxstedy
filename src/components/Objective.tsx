@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { LuPencil } from "react-icons/lu";
-import { HiPlusSm } from "react-icons/hi";
+// import { HiPlusSm } from "react-icons/hi";
+import clsx from "clsx";
 import styles from "@styles/componentStyles/home/Objective.module.scss";
 interface GrandObjective {
     id: number;
@@ -55,15 +56,20 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
             {error ? (
                 <div style={{ color: "red", fontWeight: "bold" }}>Error: {error}</div>
             ) : (
-                <div className={styles.ObjectiveWrap}>
+                <>
                     {Objective === "grand" ? (
-                        <>
+                        <div
+                            className={clsx(
+                                styles.ObjectiveWrap,
+                                grandObjectives.length === 0 && styles.ObjectiveWrapEmpty
+                            )}
+                        >
                             <div className={styles.ObjectiveHeader}>
                                 <h2>大目標</h2>
-                                <div className={styles.ObjectiveButton}>
+                                <button className={styles.ObjectiveButton}>
                                     <LuPencil />
-                                    <HiPlusSm size="30px" />
-                                </div>
+                                    {/* <HiPlusSm size="30px" /> */}
+                                </button>
                             </div>
                             {grandObjectives.length > 0 ? (
                                 grandObjectives.map((objective) => (
@@ -72,17 +78,24 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                                     </div>
                                 ))
                             ) : (
-                                <p>目標がまだ設定されていません。新しい目標を追加してください。</p>
+                                <button className={styles.ObjectiveEmptyButton}>
+                                    新しく目標を設定
+                                </button>
                             )}
-                        </>
+                        </div>
                     ) : (
-                        <>
+                        <div
+                            className={clsx(
+                                styles.ObjectiveWrap,
+                                grandObjectives.length === 0 && styles.ObjectiveWrapEmpty
+                            )}
+                        >
                             <div className={styles.ObjectiveHeader}>
                                 <h2>週目標</h2>
-                                <div className={styles.ObjectiveButton}>
+                                <button className={styles.ObjectiveButton}>
                                     <LuPencil />
-                                    <HiPlusSm size="30px" />
-                                </div>
+                                    {/* <HiPlusSm size="30px" /> */}
+                                </button>
                             </div>
                             {weekObjectives.length > 0 ? (
                                 weekObjectives.map((objective) => (
@@ -91,13 +104,13 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                                     </div>
                                 ))
                             ) : (
-                                <p>
-                                    週目標がまだ設定されていません。新しい目標を追加してください。
-                                </p>
+                                <button className={styles.ObjectiveEmptyButton}>
+                                    新しく目標を設定
+                                </button>
                             )}
-                        </>
+                        </div>
                     )}
-                </div>
+                </>
             )}
         </main>
     );

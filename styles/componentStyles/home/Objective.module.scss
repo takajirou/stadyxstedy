@@ -1,13 +1,16 @@
 .ObjectiveWrap {
+    position: relative;
     border: 1px solid #000;
     border-radius: 6px;
-    margin: 22px 0;
+    margin: 15px 0;
     padding: 0 10px;
     background: #fff;
+    height: 70px;
     .ObjectiveHeader {
         display: flex;
         justify-content: space-between;
         margin: 0 0 5px;
+        padding: 5px 0;
         border-bottom: 1px solid #000;
         h2 {
             display: flex;
@@ -17,6 +20,7 @@
             font-weight: normal;
         }
         .ObjectiveButton {
+            background: inherit;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -26,4 +30,20 @@
         font-size: 1.8rem;
         margin: 5px 0;
     }
+    .ObjectiveEmptyButton {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        font-size: 1.4rem;
+        padding: 5px 10px;
+        border: #000 solid 1px;
+        border-radius: 6px;
+    }
+}
+
+.ObjectiveWrapEmpty {
+    background-color: rgb(3, 3, 3, 0.5);
 }
