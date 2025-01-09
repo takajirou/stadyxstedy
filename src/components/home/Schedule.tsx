@@ -1,6 +1,7 @@
 "use client";
 
 import styles from "@styles/componentStyles/home/Schedule.module.scss";
+import clsx from "clsx";
 import { useState, useEffect } from "react";
 
 interface Schedule {
@@ -15,7 +16,6 @@ interface Schedule {
 }
 
 export default function Schedule() {
-    const [schedules, setSchedules] = useState<Schedule[]>([]);
     const [filteredSchedules, setFilteredSchedules] = useState<Schedule[]>([]);
     const [error, setError] = useState<string | null>(null);
 
@@ -28,8 +28,6 @@ export default function Schedule() {
                 }
 
                 const data: Schedule[] = await response.json();
-
-                setSchedules(data);
 
                 // 絞り込み処理: 今日の日付 & stateがactiveのもの
                 // const today = new Date().toISOString().split("T")[0]; // 今日の日付を取得
@@ -52,42 +50,72 @@ export default function Schedule() {
         return <div className={styles.Error}>エラーが発生しました: {error}</div>;
     }
 
-    if (schedules.length === 0) {
-        return <div className={styles.Loading}>データを読み込み中...</div>;
-    }
-
     return (
         <div className={styles.ScheduleWrap}>
             <h2>今日の勉強スケジュール</h2>
-            {filteredSchedules.map((schedule) => (
-                <div key={schedule.id} className={styles.ScheduleContents}>
+            {filteredSchedules.length === 0 ? (
+                <div
+                    className={clsx(
+                        styles.ScheduleContents,
+                        filteredSchedules.length === 0 && styles.Empty
+                    )}
+                >
+                    <button className={styles.EmptyButton}>
+                        <p>スケジュールを作成</p>
+                    </button>
                     <div className={styles.ScheduleTarget}>
                         <h2>目標</h2>
-                        <p>{schedule.object}</p>
+                        <p></p>
                     </div>
                     <div className={styles.StudyTime}>
                         <h2>勉強時間</h2>
-                        <p>{schedule.studyTime}時間</p>
+                        <p></p>
                     </div>
                     <div className={styles.BreakTime}>
                         <h2>休憩時間</h2>
-                        <p>
-                            {schedule.breakTime}分 x {schedule.breakCount}回
-                        </p>
+                        <p></p>
                     </div>
                     <div className={styles.StudyContent}>
                         <h2>勉強内容</h2>
-                        <textarea
-                            value={schedule.studyContent}
-                            readOnly
-                            className={styles.StudyContent}
-                        ></textarea>
+                        <textarea readOnly className={styles.StudyContent}></textarea>
                     </div>
-                    <button>
+                    <button className={styles.StartButton}>
                         <p>勉強開始</p>
                     </button>
                 </div>
-            ))}
+            ) : (
+                <>
+                    {filteredSchedules.map((schedule) => (
+                        <div key={schedule.id} className={styles.ScheduleContents}>
+                            <div className={styles.ScheduleTarget}>
+                                <h2>目標</h2>
+                                <p>{schedule.object}</p>
+                            </div>
+                            <div className={styles.StudyTime}>
+                                <h2>勉強時間</h2>
+                                <p>{schedule.studyTime}時間</p>
+                            </div>
+                            <div className={styles.BreakTime}>
+                                <h2>休憩時間</h2>
+                                <p>
+                                    {schedule.breakTime}分 x {schedule.breakCount}回
+                                </p>
+                            </div>
+                            <div className={styles.StudyContent}>
+                                <h2>勉強内容</h2>
+                                <textarea
+                                    value={schedule.studyContent}
+                                    readOnly
+                                    className={styles.StudyContent}
+                                ></textarea>
+                            </div>
+                            <button className={styles.StartButton}>
+                                <p>勉強開始</p>
+                            </button>
+                        </div>
+                    ))}
+                </>
+            )}
         </div>
     );
 }
