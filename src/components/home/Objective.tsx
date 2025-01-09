@@ -4,6 +4,7 @@ import { LuPencil } from "react-icons/lu";
 // import { HiPlusSm } from "react-icons/hi";
 import clsx from "clsx";
 import styles from "@styles/componentStyles/home/Objective.module.scss";
+import Link from "next/link";
 interface GrandObjective {
     id: number;
     grandObject: string;
@@ -66,10 +67,10 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                         >
                             <div className={styles.ObjectiveHeader}>
                                 <h2>大目標</h2>
-                                <button className={styles.ObjectiveButton}>
+                                <Link href="/edit/objective" className={styles.ObjectiveButton}>
                                     <LuPencil />
                                     {/* <HiPlusSm size="30px" /> */}
-                                </button>
+                                </Link>
                             </div>
                             {grandObjectives.length > 0 ? (
                                 grandObjectives.map((objective) => (
@@ -92,10 +93,10 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                         >
                             <div className={styles.ObjectiveHeader}>
                                 <h2>週目標</h2>
-                                <button className={styles.ObjectiveButton}>
+                                <Link href="/edit/objective" className={styles.ObjectiveButton}>
                                     <LuPencil />
                                     {/* <HiPlusSm size="30px" /> */}
-                                </button>
+                                </Link>
                             </div>
                             {weekObjectives.length > 0 ? (
                                 weekObjectives.map((objective) => (

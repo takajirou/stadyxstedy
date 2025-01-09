@@ -4,7 +4,7 @@ import styles from "@styles/appStyles/home/Page.module.scss";
 import Footer from "@/components/Footer";
 import DayCounter from "@/components/home/DayCounter";
 
-export default function ObjectivesPage() {
+export default function Home() {
     return (
         <>
             <div className={styles.PageWrap}>
