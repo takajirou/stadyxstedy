@@ -3,12 +3,16 @@
 import styles from "@styles/componentStyles/home/DayCounter.module.scss";
 import { useEffect, useState } from "react";
 
+interface Counter {
+    count: number;
+}
+
 export default function DayCounter() {
-    const [counter, setCounter] = useState({ count: 0 });
+    const [counter, setCounter] = useState<Counter | null>(null);
 
     useEffect(() => {
         const fetchCounter = async () => {
-            const response = await fetch("/DayCounter.json");
+            const response = await fetch("/dayCounter.json");
 
             if (!response.ok) {
                 throw new Error(`Error fetching counter.json: ${response.status}`);
@@ -24,7 +28,7 @@ export default function DayCounter() {
 
     return (
         <div className={styles.DayCounterWrap}>
-            <h1>{counter.count}日連続学習中！</h1>
+            <h1>{counter ? `${counter.count}日連続学習中` : "loading..."}</h1>
         </div>
     );
 }
