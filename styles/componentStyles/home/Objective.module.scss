@@ -1,11 +1,11 @@
 .ObjectiveWrap {
     position: relative;
-    border: 1px solid #000;
     border-radius: 6px;
     margin: 15px 0;
     padding: 0 10px;
     background: #fff;
     height: 70px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
     .ObjectiveHeader {
         display: flex;
         justify-content: space-between;
