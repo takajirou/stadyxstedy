@@ -7,6 +7,9 @@
     justify-content: center;
     margin-top: 20px;
     background-color: #fff;
+    ::first-letter {
+        color: #bdbd46;
+    }
     h1 {
         font-size: 3rem;
     }
