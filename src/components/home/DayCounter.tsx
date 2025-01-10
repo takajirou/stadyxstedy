@@ -28,7 +28,7 @@ export default function DayCounter() {
 
     return (
         <div className={styles.DayCounterWrap}>
-            <h1>{counter ? `${counter.count}日連続学習中` : "loading..."}</h1>
+            <h1>{counter ? `${counter.count}日連続学習中！` : "loading..."}</h1>
         </div>
     );
 }

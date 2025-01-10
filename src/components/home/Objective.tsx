@@ -67,8 +67,8 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                         >
                             <div className={styles.ObjectiveHeader}>
                                 <h2>大目標</h2>
-                                <Link href="/edit/objective" className={styles.ObjectiveButton}>
-                                    <LuPencil />
+                                <Link href="/edit" className={styles.ObjectiveButton}>
+                                    <LuPencil color="#898989" />
                                     {/* <HiPlusSm size="30px" /> */}
                                 </Link>
                             </div>
@@ -93,8 +93,8 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                         >
                             <div className={styles.ObjectiveHeader}>
                                 <h2>週目標</h2>
-                                <Link href="/edit/objective" className={styles.ObjectiveButton}>
-                                    <LuPencil />
+                                <Link href="/edit" className={styles.ObjectiveButton}>
+                                    <LuPencil color="#898989" />
                                     {/* <HiPlusSm size="30px" /> */}
                                 </Link>
                             </div>
