@@ -11,6 +11,12 @@ export default function ObjectiveEdit() {
                 </Link>
                 <h1>目標編集</h1>
             </header>
+            <div className={styles.EditGrandObjective}>
+                <h2>大目標</h2>
+            </div>
+            <div className={styles.EditWeekObjective}>
+                <h2>週目標</h2>
+            </div>
         </>
     );
 }
