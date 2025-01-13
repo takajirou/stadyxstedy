@@ -4,11 +4,43 @@
     height: 83px;
     position: fixed;
     bottom: 0;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 65px 1fr 1fr;
     justify-content: space-around;
+    .HomeBtn {
+        grid-column: 1 / 2;
+    }
+    .CreateBtn {
+        grid-column: 2 / 3;
+    }
+    .HistoryBtn {
+        grid-column: 4 / 5;
+    }
+    .SettingBtn {
+        grid-column: 5 / 6;
+    }
     .NavBtn {
+        width: 50px;
+        margin: auto;
         margin-top: 12px;
         text-align: center;
         color: #fff;
+    }
+    .StartBtn {
+        position: absolute;
+        top: -30px;
+        left: 0;
+        right: 0;
+        margin: auto;
+        padding-top: 10px;
+        background-color: #fff;
+        border: #1976d2 solid 1px;
+        color: #1976d2;
+        border-radius: 50%;
+        width: 75px;
+        height: 75px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.2rem;
     }
 }

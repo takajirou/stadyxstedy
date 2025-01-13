@@ -1,31 +1,35 @@
 import styles from "@styles/componentStyles/Footer.module.scss";
 import { GoHome } from "react-icons/go";
-import { PiPlusSquareBold } from "react-icons/pi";
+import { PiPlusSquare } from "react-icons/pi";
+import { IoBookOutline } from "react-icons/io5";
 import { BsClockHistory } from "react-icons/bs";
-import { Button } from "@mui/material";
+import { GoGear } from "react-icons/go";
+import clsx from "clsx";
+import Link from "next/link";
 
 export default function Footer() {
     return (
         <footer className={styles.FooterWrap}>
-            <div className={styles.NavBtn}>
+            <Link href="/home" className={clsx(styles.NavBtn, styles.HomeBtn)}>
                 <GoHome color="white" size="24px" />
                 <p>ホーム</p>
-            </div>
-            <div className={styles.NavBtn}>
-                <PiPlusSquareBold color="white" size="24px" />
+            </Link>
+            <Link href="/create" className={clsx(styles.NavBtn, styles.CreateBtn)}>
+                <PiPlusSquare color="white" size="24px" />
                 <p>作成</p>
-            </div>
-            <Button variant="contained" className={styles.StartButton} sx={{ padding: 0 }}>
+            </Link>
+            <Link href="/study" className={clsx(styles.StartBtn)}>
+                <IoBookOutline color="#1976d2" size="30px" />
                 <p>勉強開始</p>
-            </Button>
-            <div className={styles.NavBtn}>
+            </Link>
+            <Link href="/history" className={clsx(styles.NavBtn, styles.HistoryBtn)}>
                 <BsClockHistory color="white" size="24px" />
                 <p>履歴</p>
-            </div>
-            <div className={styles.NavBtn}>
-                <BsClockHistory color="white" size="24px" />
+            </Link>
+            <Link href="/option" className={clsx(styles.NavBtn, styles.SettingBtn)}>
+                <GoGear color="white" size="24px" />
                 <p>設定</p>
-            </div>
+            </Link>
         </footer>
     );
 }
