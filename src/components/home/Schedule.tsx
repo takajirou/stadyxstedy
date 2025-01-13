@@ -3,7 +3,7 @@
 import styles from "@styles/componentStyles/home/Schedule.module.scss";
 import clsx from "clsx";
 import { useState, useEffect } from "react";
-import { Button } from "@mui/material";
+import { Button, ToggleButtonGroup, ToggleButton } from "@mui/material";
 
 interface Schedule {
     id: number;
@@ -19,6 +19,7 @@ interface Schedule {
 export default function Schedule() {
     const [filteredSchedules, setFilteredSchedules] = useState<Schedule[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [selectedSchedule, setSelectedSchedule] = useState("today");
 
     useEffect(() => {
         const fetchSchedules = async () => {
@@ -33,9 +34,22 @@ export default function Schedule() {
                 // 絞り込み処理: 今日の日付 & stateがactiveのもの
                 // const today = new Date().toISOString().split("T")[0]; // 今日の日付を取得
 
-                const today = "2025-01-01"; // テスト用の日付
+                // テスト用の日付
+                const today = new Date("2025-01-01");
+
+                // selectedScheduleに応じてターゲット日付を計算
+                const targetDate =
+                    selectedSchedule === "tomorrow"
+                        ? new Date(today.getTime() + 24 * 60 * 60 * 1000)
+                        : today;
+
+                // 日付を文字列形式に変換
+                const targetDateString = targetDate.toISOString().split("T")[0];
+
+                // フィルタリング処理
                 const filtered = data.filter(
-                    (schedule) => schedule.date === today && schedule.state === "unfinished"
+                    (schedule) =>
+                        schedule.date === targetDateString && schedule.state === "unfinished"
                 );
 
                 setFilteredSchedules(filtered);
@@ -45,7 +59,7 @@ export default function Schedule() {
         };
 
         fetchSchedules();
-    }, []);
+    }, [selectedSchedule]);
 
     if (error) {
         return <div className={styles.Error}>エラーが発生しました: {error}</div>;
@@ -53,7 +67,38 @@ export default function Schedule() {
 
     return (
         <div className={styles.ScheduleWrap}>
-            <h2>今日の勉強スケジュール</h2>
+            <ToggleButtonGroup
+                value={selectedSchedule}
+                exclusive
+                onChange={(e, value) => {
+                    if (value) setSelectedSchedule(value);
+                }}
+            >
+                <ToggleButton
+                    className={clsx(
+                        styles.ScheduleHeader,
+                        selectedSchedule === "today" && styles.SelectedBtn
+                    )}
+                    value="today"
+                    sx={{
+                        "&.Mui-selected": {
+                            backgroundColor: "#333",
+                            color: "#fff",
+                        },
+                    }}
+                >
+                    今日のスケジュール
+                </ToggleButton>
+                <ToggleButton
+                    className={clsx(
+                        styles.ScheduleHeader,
+                        selectedSchedule === "tomorrow" && styles.SelectedBtn
+                    )}
+                    value="tomorrow"
+                >
+                    明日のスケジュール
+                </ToggleButton>
+            </ToggleButtonGroup>
             {filteredSchedules.length === 0 ? (
                 <div
                     className={clsx(
@@ -80,9 +125,6 @@ export default function Schedule() {
                         <h2>勉強内容</h2>
                         <textarea readOnly className={styles.StudyContent}></textarea>
                     </div>
-                    <button className={styles.StartButton}>
-                        <p>勉強開始</p>
-                    </button>
                 </div>
             ) : (
                 <>
@@ -110,13 +152,6 @@ export default function Schedule() {
                                     className={styles.StudyContent}
                                 ></textarea>
                             </div>
-                            <Button
-                                variant="contained"
-                                className={styles.StartButton}
-                                sx={{ padding: 0 }}
-                            >
-                                <p>勉強開始</p>
-                            </Button>
                         </div>
                     ))}
                 </>

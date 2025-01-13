@@ -18,5 +18,15 @@
         "studyContent": "udemyを視聴し、学習内容をメモする。",
         "date": "2025-01-01",
         "state": "unfinished"
+    },
+    {
+        "id": 2,
+        "object": "レッスン6まで見る",
+        "studyTime": 3,
+        "breakTime": 10,
+        "breakCount": 2,
+        "studyContent": "udemyを視聴し、学習内容をメモする。",
+        "date": "2025-01-02",
+        "state": "unfinished"
     }
 ]
