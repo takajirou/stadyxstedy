@@ -15,3 +15,12 @@
         margin-left: 10px;
     }
 }
+.EditButton {
+    display: flex;
+    justify-content: space-around;
+    Button {
+        font-size: 1.1rem;
+        width: 100px;
+        height: 30px;
+    }
+}
