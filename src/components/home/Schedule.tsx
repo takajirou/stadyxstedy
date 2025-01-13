@@ -3,6 +3,7 @@
 import styles from "@styles/componentStyles/home/Schedule.module.scss";
 import clsx from "clsx";
 import { useState, useEffect } from "react";
+import { Button } from "@mui/material";
 
 interface Schedule {
     id: number;
@@ -60,9 +61,9 @@ export default function Schedule() {
                         filteredSchedules.length === 0 && styles.Empty
                     )}
                 >
-                    <button className={styles.EmptyButton}>
+                    <Button variant="contained" className={styles.EmptyButton}>
                         <p>スケジュールを作成</p>
-                    </button>
+                    </Button>
                     <div className={styles.ScheduleTarget}>
                         <h2>目標</h2>
                         <p></p>
@@ -109,9 +110,13 @@ export default function Schedule() {
                                     className={styles.StudyContent}
                                 ></textarea>
                             </div>
-                            <button className={styles.StartButton}>
+                            <Button
+                                variant="contained"
+                                className={styles.StartButton}
+                                sx={{ padding: 0 }}
+                            >
                                 <p>勉強開始</p>
-                            </button>
+                            </Button>
                         </div>
                     ))}
                 </>

@@ -5,6 +5,7 @@ import { LuPencil } from "react-icons/lu";
 import clsx from "clsx";
 import styles from "@styles/componentStyles/home/Objective.module.scss";
 import Link from "next/link";
+import { Button } from "@mui/material";
 interface GrandObjective {
     id: number;
     grandObject: string;
@@ -79,9 +80,9 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                                     </div>
                                 ))
                             ) : (
-                                <button className={styles.ObjectiveEmptyButton}>
+                                <Button variant="contained" className={styles.ObjectiveEmptyButton}>
                                     新しく目標を設定
-                                </button>
+                                </Button>
                             )}
                         </div>
                     ) : (
@@ -105,9 +106,9 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                                     </div>
                                 ))
                             ) : (
-                                <button className={styles.ObjectiveEmptyButton}>
+                                <Button variant="contained" className={styles.ObjectiveEmptyButton}>
                                     新しく目標を設定
-                                </button>
+                                </Button>
                             )}
                         </div>
                     )}
