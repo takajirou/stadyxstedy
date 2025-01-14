@@ -4,7 +4,6 @@ import { IoIosArrowBack } from "react-icons/io";
 import EditFeld from "@/components/edit/EditFeld";
 import Button from "@mui/material/Button";
 
-
 export default function ObjectiveEdit() {
     return (
         <div>
