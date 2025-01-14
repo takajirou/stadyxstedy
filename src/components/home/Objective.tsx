@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { LuPencil } from "react-icons/lu";
-// import { HiPlusSm } from "react-icons/hi";
 import clsx from "clsx";
 import styles from "@styles/componentStyles/home/Objective.module.scss";
 import Link from "next/link";
@@ -70,7 +69,6 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                                 <h2>大目標</h2>
                                 <Link href="/edit" className={styles.ObjectiveButton}>
                                     <LuPencil color="#898989" />
-                                    {/* <HiPlusSm size="30px" /> */}
                                 </Link>
                             </div>
                             {grandObjectives.length > 0 ? (
@@ -96,7 +94,6 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                                 <h2>週目標</h2>
                                 <Link href="/edit" className={styles.ObjectiveButton}>
                                     <LuPencil color="#898989" />
-                                    {/* <HiPlusSm size="30px" /> */}
                                 </Link>
                             </div>
                             {weekObjectives.length > 0 ? (
