@@ -80,12 +80,6 @@ export default function Schedule() {
                         selectedSchedule === "today" && styles.SelectedBtn
                     )}
                     value="today"
-                    sx={{
-                        "&.Mui-selected": {
-                            backgroundColor: "#333",
-                            color: "#fff",
-                        },
-                    }}
                 >
                     今日のスケジュール
                 </ToggleButton>
