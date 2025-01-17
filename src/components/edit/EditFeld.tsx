@@ -3,6 +3,8 @@
 import styles from "@styles/componentStyles/edit/EditField.module.scss";
 import TextField from "@mui/material/TextField";
 import { useEffect, useState } from "react";
+import Button from "@mui/material/Button";
+import Link from "next/link";
 
 interface GrandObjective {
     id: number;
@@ -51,49 +53,61 @@ export default function EditFeld() {
     }
 
     return (
-        <div className={styles.EditFieldWrap}>
-            <div className={styles.EditObjective}>
-                <TextField
-                    fullWidth
-                    label="大目標"
-                    placeholder={grandObjectives.length > 0 ? grandObjectives[0].grandObject : ""}
-                    helperText="最大50文字"
-                    InputLabelProps={{ shrink: true }}
-                    inputProps={{
-                        maxLength: 50,
-                        style: { fontSize: "1.5rem" },
-                    }}
-                    sx={{
-                        "& label": {
-                            fontSize: "1.5rem",
-                        },
-                        "& .MuiFormHelperText-root": {
-                            fontSize: "1.2rem",
-                        },
-                    }}
-                />
+        <>
+            <div className={styles.EditFieldWrap}>
+                <div className={styles.EditObjective}>
+                    <TextField
+                        fullWidth
+                        label="大目標"
+                        placeholder={
+                            grandObjectives.length > 0 ? grandObjectives[0].grandObject : ""
+                        }
+                        helperText="最大50文字"
+                        InputLabelProps={{ shrink: true }}
+                        inputProps={{
+                            maxLength: 50,
+                            style: { fontSize: "1.5rem" },
+                        }}
+                        sx={{
+                            "& label": {
+                                fontSize: "1.5rem",
+                            },
+                            "& .MuiFormHelperText-root": {
+                                fontSize: "1.2rem",
+                            },
+                        }}
+                    />
+                </div>
+                <div className={styles.EditObjective}>
+                    <TextField
+                        fullWidth
+                        label="週目標"
+                        placeholder={weekObjectives.length > 0 ? weekObjectives[0].weekObject : ""}
+                        helperText="最大50文字"
+                        InputLabelProps={{ shrink: true }}
+                        inputProps={{
+                            maxLength: 50,
+                            style: { fontSize: "1.5rem" },
+                        }}
+                        sx={{
+                            "& label": {
+                                fontSize: "1.5rem",
+                            },
+                            "& .MuiFormHelperText-root": {
+                                fontSize: "1.2rem",
+                            },
+                        }}
+                    />
+                </div>
             </div>
-            <div className={styles.EditObjective}>
-                <TextField
-                    fullWidth
-                    label="週目標"
-                    placeholder={weekObjectives.length > 0 ? weekObjectives[0].weekObject : ""}
-                    helperText="最大50文字"
-                    InputLabelProps={{ shrink: true }}
-                    inputProps={{
-                        maxLength: 50,
-                        style: { fontSize: "1.5rem" },
-                    }}
-                    sx={{
-                        "& label": {
-                            fontSize: "1.5rem",
-                        },
-                        "& .MuiFormHelperText-root": {
-                            fontSize: "1.2rem",
-                        },
-                    }}
-                />
+            <div className={styles.EditButton}>
+                <Link href="/home">
+                    <Button variant="outlined">戻る</Button>
+                </Link>
+                <Link href="/home">
+                    <Button variant="contained">編集を終わる</Button>
+                </Link>
             </div>
-        </div>
+        </>
     );
 }
