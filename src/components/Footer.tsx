@@ -8,10 +8,29 @@ import { BsClockHistory } from "react-icons/bs";
 import clsx from "clsx";
 import Link from "next/link";
 import { Dialog, DialogActions, Button, DialogTitle } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/utils/supabaseClient";
 
 export default function Footer() {
+    // const today = new Date().toISOString().split("T")[0]; // 今日の日付を取得
+    // const today = new Date("2025-01-01");
+    const today = new Date("2025-01-01").toISOString().split("T")[0];
+    const [data, setData] = useState(null);
     const [open, setOpen] = useState(false);
+    const [openNoneSchedule, setOpenNoneSchedule] = useState(false);
+
+    useEffect(() => {
+        const fetchObjectives = async () => {
+            const { data, error } = await supabase.from("schedule").select("*").eq("date", today);
+
+            if (error) {
+                console.error("Error fetching objectives", error);
+            } else {
+                setData(data.length > 0 ? data[0] : null);
+            }
+        };
+        fetchObjectives();
+    });
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -21,15 +40,30 @@ export default function Footer() {
         setOpen(false);
     };
 
+    const handleOpenNoneSchedule = () => {
+        setOpenNoneSchedule(true);
+    };
+
+    const handleCloseNoneSchedule = () => {
+        setOpenNoneSchedule(false);
+    };
+
     return (
         <>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>勉強を開始しますか？</DialogTitle>
-                <DialogActions onClick={handleClose}>
+                <DialogActions>
                     <Button onClick={handleClose}>いいえ</Button>
                     <Button onClick={handleClose} href="/study">
                         はい
                     </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog open={openNoneSchedule} onClose={handleCloseNoneSchedule}>
+                <DialogTitle>今日のスケジュールが設定されていません</DialogTitle>
+                <DialogActions>
+                    <Button onClick={handleCloseNoneSchedule}>閉じる</Button>
                 </DialogActions>
             </Dialog>
 
@@ -42,7 +76,10 @@ export default function Footer() {
                     <PiPlusSquare color="white" size="24px" />
                     <p>作成</p>
                 </Link>
-                <button className={clsx(styles.StartBtn)} onClick={handleClickOpen}>
+                <button
+                    className={clsx(styles.StartBtn)}
+                    onClick={data ? handleClickOpen : handleOpenNoneSchedule}
+                >
                     <IoBookOutline color="#1976d2" size="30px" />
                     <p>勉強開始</p>
                 </button>
