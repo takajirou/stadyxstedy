@@ -9,7 +9,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { Dialog, DialogActions, Button, DialogTitle } from "@mui/material";
 import { useState, useEffect } from "react";
-import { supabase } from "@/utils/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 
 export default function Footer() {
     // const today = new Date().toISOString().split("T")[0]; // 今日の日付を取得
