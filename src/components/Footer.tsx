@@ -27,7 +27,9 @@ export default function Footer() {
                 <DialogTitle>勉強を開始しますか？</DialogTitle>
                 <DialogActions onClick={handleClose}>
                     <Button onClick={handleClose}>いいえ</Button>
-                    <Button onClick={handleClose}>はい</Button>
+                    <Button onClick={handleClose} href="/study">
+                        はい
+                    </Button>
                 </DialogActions>
             </Dialog>
 
