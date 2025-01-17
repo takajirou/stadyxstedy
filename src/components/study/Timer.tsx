@@ -4,6 +4,8 @@ import styles from "@styles/componentStyles/study/Timer.module.scss";
 import React, { useState, useEffect } from "react";
 import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import { Typography } from "@mui/material";
+import { orbitron } from "@/app/fonts";
 
 const Timer: React.FC<{ totalStudyHours: number; breakMinutes: number; breakCount: number }> = ({
     totalStudyHours,
@@ -67,32 +69,36 @@ const Timer: React.FC<{ totalStudyHours: number; breakMinutes: number; breakCoun
     };
 
     return (
-        <div className={styles.TimerWrap}>
-            <p>{isBreak ? "休憩中" : remainingStudyTime === 0 ? "勉強終了" : "勉強中"}</p>
-            <h1>{formatTime(remainingStudyTime)}</h1>
-            <p>
-                {isBreak
-                    ? `休憩時間残り： ${formatTime(time, true)}`
-                    : breakCount - currentCycle === 0
-                    ? `勉強終了まで： ${formatTime(time, true)}`
-                    : `休憩まで： ${formatTime(time, true)}`}
-            </p>
-            <button onClick={togglePause} className={styles.PauseBtn}>
-                {isPaused ? (
-                    <PlayCircleOutlineIcon
-                        sx={{
-                            fontSize: 40,
-                        }}
-                    />
-                ) : (
-                    <PauseCircleFilledIcon
-                        sx={{
-                            fontSize: 40,
-                        }}
-                    />
-                )}
-            </button>
-        </div>
+        <>
+            <div className={styles.TimerWrap}>
+                <p>{isBreak ? "休憩中" : remainingStudyTime === 0 ? "勉強終了" : "勉強中"}</p>
+                <Typography variant="h1" className={orbitron.className}>
+                    {formatTime(remainingStudyTime)}
+                </Typography>
+                <p>
+                    {isBreak
+                        ? `休憩時間残り： ${formatTime(time, true)}`
+                        : breakCount - currentCycle === 0
+                        ? `勉強終了まで： ${formatTime(time, true)}`
+                        : `休憩まで： ${formatTime(time, true)}`}
+                </p>
+                <button onClick={togglePause} className={styles.PauseBtn}>
+                    {isPaused ? (
+                        <PlayCircleOutlineIcon
+                            sx={{
+                                fontSize: 30,
+                            }}
+                        />
+                    ) : (
+                        <PauseCircleFilledIcon
+                            sx={{
+                                fontSize: 30,
+                            }}
+                        />
+                    )}
+                </button>
+            </div>
+        </>
     );
 };
 

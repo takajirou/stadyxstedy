@@ -7,13 +7,35 @@ export default function Study() {
     return (
         <>
             <Header />
-            <div className={styles.TimeWrap}>
-                <div className={styles.Timer}>
-                    <Timer totalStudyHours={0.01} breakMinutes={0.1} breakCount={4} />
+            <div className={styles.Page}>
+                <div className={styles.TimerWrap}>
+                    <div className={styles.Timer}>
+                        <Timer totalStudyHours={0.01} breakMinutes={0.1} breakCount={4} />
+                    </div>
+                    <div className={styles.EndBtn}>
+                        <Button
+                            variant="outlined"
+                            sx={{
+                                width: "110px",
+                                height: "40px",
+                                fontSize: "1.4rem",
+                                color: "#7194e1",
+                            }}
+                        >
+                            予定の確認
+                        </Button>
+                        <Button
+                            variant="contained"
+                            sx={{
+                                width: "110px",
+                                height: "40px",
+                                fontSize: "1.4rem",
+                            }}
+                        >
+                            勉強終了
+                        </Button>
+                    </div>
                 </div>
-                <Button className={styles.EndBtn} variant="contained">
-                    勉強終了
-                </Button>
             </div>
         </>
     );
