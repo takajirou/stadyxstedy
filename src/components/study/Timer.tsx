@@ -6,6 +6,7 @@ import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { Typography } from "@mui/material";
 import { orbitron } from "@/app/fonts";
+import { Button } from "@mui/material";
 
 const Timer: React.FC<{ totalStudyHours: number; breakMinutes: number; breakCount: number }> = ({
     totalStudyHours,
@@ -71,7 +72,9 @@ const Timer: React.FC<{ totalStudyHours: number; breakMinutes: number; breakCoun
     return (
         <>
             <div className={styles.TimerWrap}>
-                <p>{isBreak ? "休憩中" : remainingStudyTime === 0 ? "勉強終了" : "勉強中"}</p>
+                <p className={styles.StudyState}>
+                    {isBreak ? "休憩中" : remainingStudyTime === 0 ? "勉強終了" : "勉強中"}
+                </p>
                 <Typography variant="h1" className={orbitron.className}>
                     {formatTime(remainingStudyTime)}
                 </Typography>
@@ -82,7 +85,7 @@ const Timer: React.FC<{ totalStudyHours: number; breakMinutes: number; breakCoun
                         ? `勉強終了まで： ${formatTime(time, true)}`
                         : `休憩まで： ${formatTime(time, true)}`}
                 </p>
-                <button onClick={togglePause} className={styles.PauseBtn}>
+                <Button onClick={togglePause} className={styles.PauseBtn}>
                     {isPaused ? (
                         <PlayCircleOutlineIcon
                             sx={{
@@ -96,7 +99,7 @@ const Timer: React.FC<{ totalStudyHours: number; breakMinutes: number; breakCoun
                             }}
                         />
                     )}
-                </button>
+                </Button>
             </div>
         </>
     );
