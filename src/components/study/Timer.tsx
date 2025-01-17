@@ -68,12 +68,14 @@ const Timer: React.FC<{ totalStudyHours: number; breakMinutes: number; breakCoun
 
     return (
         <div className={styles.TimerWrap}>
-            <p>{isBreak ? "休憩中" : "勉強中"}</p>
+            <p>{isBreak ? "休憩中" : remainingStudyTime === 0 ? "勉強終了" : "勉強中"}</p>
             <h1>{formatTime(remainingStudyTime)}</h1>
             <p>
                 {isBreak
-                    ? `休憩時間残り ${formatTime(time, true)}`
-                    : `休憩まであと ${formatTime(time, true)}`}
+                    ? `休憩時間残り： ${formatTime(time, true)}`
+                    : breakCount - currentCycle === 0
+                    ? `勉強終了まで： ${formatTime(time, true)}`
+                    : `休憩まで： ${formatTime(time, true)}`}
             </p>
             <button onClick={togglePause} className={styles.PauseBtn}>
                 {isPaused ? (
@@ -90,7 +92,6 @@ const Timer: React.FC<{ totalStudyHours: number; breakMinutes: number; breakCoun
                     />
                 )}
             </button>
-            <p>残りの休憩回数: {breakCount - currentCycle}</p>
         </div>
     );
 };
