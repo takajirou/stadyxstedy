@@ -1,26 +1,21 @@
-"use client";
-import { useRouter } from "next/navigation";
-import { IoIosArrowBack } from "react-icons/io";
-import styles from "@styles/appStyles/study/Page.module.scss";
+// import styles from "@styles/appStyles/study/Page.module.scss";
+import Header from "@/components/Header";
+import Timer from "@/components/study/Timer";
 
 export default function Study() {
-    const router = useRouter();
-
-    const handleBack = () => {
-        if (window.history.length > 1) {
-            router.back();
-        } else {
-            router.push("/home");
-        }
-    };
     return (
         <>
-            <header className={styles.ObjectiveEditHeader}>
-                <button onClick={handleBack}>
-                    <IoIosArrowBack size="30px" color="#fff" />
-                </button>
-                <h1>勉強</h1>
-            </header>
+            <Header />
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100vh",
+                }}
+            >
+                <Timer totalStudyHours={0.01} breakMinutes={0.1} breakCount={4} />
+            </div>
         </>
     );
 }
