@@ -1,0 +1,16 @@
+.Header {
+    display: flex;
+    justify-content: center;
+
+    background-color: #fff;
+    position: relative;
+    button {
+        background-color: inherit;
+        display: flex;
+        align-items: center;
+        position: absolute;
+        left: 5%;
+        top: 30%;
+        height: fit-content;
+    }
+}
