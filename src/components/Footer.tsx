@@ -21,7 +21,7 @@ export default function Footer() {
 
     useEffect(() => {
         const fetchObjectives = async () => {
-            const { data, error } = await supabase.from("schedule").select("*").eq("date", today);
+            const { data, error } = await supabase.from("Schedule").select("*").eq("date", today);
 
             if (error) {
                 console.error("Error fetching objectives", error);

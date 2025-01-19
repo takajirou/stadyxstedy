@@ -13,8 +13,8 @@ interface Objectives {
     Size: string;
 }
 export default function EditFeld() {
-    const [grandObjectives, setGrandObjective] = useState<Objectives[]>([]);
-    const [weekObjectives, setWeekObjective] = useState<Objectives[]>([]);
+    const [grandObjective, setGrandObjective] = useState<Objectives[]>([]);
+    const [weekObjective, setWeekObjective] = useState<Objectives[]>([]);
 
     useEffect(() => {
         const fetchGrandObjectives = async () => {
@@ -73,7 +73,7 @@ export default function EditFeld() {
                     <TextField
                         fullWidth
                         label="大目標"
-                        placeholder={grandObjectives.length > 0 ? grandObjectives[0].Objective : ""}
+                        placeholder={grandObjective.length > 0 ? grandObjective[0].Objective : ""}
                         helperText="最大50文字"
                         InputLabelProps={{ shrink: true }}
                         inputProps={{
@@ -94,7 +94,7 @@ export default function EditFeld() {
                     <TextField
                         fullWidth
                         label="週目標"
-                        placeholder={weekObjectives.length > 0 ? weekObjectives[0].Objective : ""}
+                        placeholder={weekObjective.length > 0 ? weekObjective[0].Objective : ""}
                         helperText="最大50文字"
                         InputLabelProps={{ shrink: true }}
                         inputProps={{

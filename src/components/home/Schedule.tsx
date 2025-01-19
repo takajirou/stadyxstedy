@@ -4,6 +4,7 @@ import styles from "@styles/componentStyles/home/Schedule.module.scss";
 import clsx from "clsx";
 import { useState, useEffect } from "react";
 import { Button, ToggleButtonGroup, ToggleButton } from "@mui/material";
+import { supabase } from "@lib/supabaseClient";
 
 interface Schedule {
     id: number;
@@ -24,16 +25,6 @@ export default function Schedule() {
     useEffect(() => {
         const fetchSchedules = async () => {
             try {
-                const response = await fetch("/schedule.json");
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch schedule: ${response.status}`);
-                }
-
-                const data: Schedule[] = await response.json();
-
-                // 絞り込み処理: 今日の日付 & stateがactiveのもの
-                // const today = new Date().toISOString().split("T")[0]; // 今日の日付を取得
-
                 // テスト用の日付
                 const today = new Date("2025-01-01");
 
@@ -46,13 +37,18 @@ export default function Schedule() {
                 // 日付を文字列形式に変換
                 const targetDateString = targetDate.toISOString().split("T")[0];
 
-                // フィルタリング処理
-                const filtered = data.filter(
-                    (schedule) =>
-                        schedule.date === targetDateString && schedule.state === "unfinished"
-                );
+                // Supabaseからスケジュールデータを取得
+                const { data, error } = await supabase
+                    .from("Schedule")
+                    .select("*")
+                    .eq("date", targetDateString)
+                    .eq("state", "unfinished");
 
-                setFilteredSchedules(filtered);
+                if (error) {
+                    throw new Error(error.message);
+                }
+
+                setFilteredSchedules(data || []);
             } catch (err) {
                 setError(err instanceof Error ? err.message : "Unknown error");
             }
