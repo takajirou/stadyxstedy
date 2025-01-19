@@ -13,7 +13,6 @@ import { supabase } from "@/lib/supabaseClient";
 
 export default function Footer() {
     // const today = new Date().toISOString().split("T")[0]; // 今日の日付を取得
-    // const today = new Date("2025-01-01");
     const today = new Date("2025-01-01").toISOString().split("T")[0];
     const [data, setData] = useState(null);
     const [open, setOpen] = useState(false);

@@ -4,24 +4,50 @@ import styles from "@styles/componentStyles/study/Timer.module.scss";
 import React, { useState, useEffect } from "react";
 import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import { Typography } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import { orbitron } from "@/app/fonts";
-import { Button } from "@mui/material";
+import { supabase } from "@/lib/supabaseClient";
 
-const Timer: React.FC<{ totalStudyHours: number; breakMinutes: number; breakCount: number }> = ({
-    totalStudyHours,
-    breakMinutes,
-    breakCount,
-}) => {
-    const totalStudySeconds = totalStudyHours * 3600;
-    const breakSeconds = breakMinutes * 60;
-    const studyPerCycleSeconds = totalStudySeconds / breakCount;
+const Timer = () => {
+    // const today = new Date().toISOString().split("T")[0]; // 今日の日付を取得
+    const today = new Date("2025-01-01").toISOString().split("T")[0];
+    const [totalStudyHours, setTotalStudyHours] = useState<number | null>(null);
+    const [breakMinutes, setBreakMinutes] = useState<number | null>(null);
+    const [breakCount, setBreakCount] = useState<number | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
-    const [time, setTime] = useState(studyPerCycleSeconds);
-    const [remainingStudyTime, setRemainingStudyTime] = useState(totalStudySeconds);
-    const [currentCycle, setCurrentCycle] = useState(1);
+    const [time, setTime] = useState<number>(0);
+    const [remainingStudyTime, setRemainingStudyTime] = useState<number>(0);
+    const [currentCycle, setCurrentCycle] = useState<number>(1);
     const [isPaused, setIsPaused] = useState(false);
     const [isBreak, setIsBreak] = useState(false);
+
+    useEffect(() => {
+        const fetchScheduleData = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from("Schedule")
+                    .select("studyTime, breakTime, breakCount")
+                    .eq("date", today)
+                    .single();
+
+                if (error) throw new Error(error.message);
+
+                setTotalStudyHours(data.studyTime);
+                setBreakMinutes(data.breakTime);
+                setBreakCount(data.breakCount);
+
+                const totalStudySeconds = data.studyTime * 3600;
+                const studyPerCycleSeconds = totalStudySeconds / data.breakCount;
+                setTime(studyPerCycleSeconds);
+                setRemainingStudyTime(totalStudySeconds);
+            } catch (err) {
+                setError(err instanceof Error ? err.message : "データの取得に失敗しました");
+            }
+        };
+
+        fetchScheduleData();
+    }, [today]);
 
     useEffect(() => {
         if (time > 0 && !isPaused) {
@@ -35,73 +61,59 @@ const Timer: React.FC<{ totalStudyHours: number; breakMinutes: number; breakCoun
 
             return () => clearInterval(timer);
         } else if (time === 0) {
-            if (!isBreak) {
-                if (currentCycle < breakCount) {
-                    setIsBreak(true);
-                    setTime(breakSeconds);
-                }
-            } else {
+            if (!isBreak && currentCycle < breakCount!) {
+                setIsBreak(true);
+                setTime(breakMinutes! * 60);
+            } else if (isBreak) {
                 setIsBreak(false);
-                if (currentCycle < breakCount) {
-                    setTime(studyPerCycleSeconds);
+                if (currentCycle < breakCount!) {
+                    setTime(remainingStudyTime / (breakCount! - currentCycle));
                     setCurrentCycle((prev) => prev + 1);
                 }
             }
         }
-    }, [time, isPaused, isBreak, currentCycle, breakCount, studyPerCycleSeconds, breakSeconds]);
+    }, [time, isPaused, isBreak, currentCycle, breakCount, remainingStudyTime, breakMinutes]);
 
-    const formatTime = (time: number, isMinutesOnly: boolean = false) => {
-        if (isMinutesOnly) {
-            const m = Math.floor(time / 60);
-            const s = time % 60;
-            return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-        } else {
-            const h = Math.floor(time / 3600);
-            const m = Math.floor((time % 3600) / 60);
-            const s = time % 60;
-            return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}:${s
-                .toString()
-                .padStart(2, "0")}`;
-        }
+    const formatTime = (time: number) => {
+        const h = Math.floor(time / 3600);
+        const m = Math.floor((time % 3600) / 60);
+        const s = time % 60;
+        return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}:${s
+            .toString()
+            .padStart(2, "0")}`;
     };
 
     const togglePause = () => {
         setIsPaused((prev) => !prev);
     };
 
+    if (error) {
+        return <div className={styles.Error}>エラー: {error}</div>;
+    }
+
+    if (totalStudyHours === null || breakMinutes === null || breakCount === null) {
+        return <div>データを読み込んでいます...</div>;
+    }
+
     return (
-        <>
-            <div className={styles.TimerWrap}>
-                <p className={styles.StudyState}>
-                    {isBreak ? "休憩中" : remainingStudyTime === 0 ? "勉強終了" : "勉強中"}
-                </p>
-                <Typography variant="h1" className={orbitron.className}>
-                    {formatTime(remainingStudyTime)}
-                </Typography>
-                <p>
-                    {isBreak
-                        ? `休憩時間残り： ${formatTime(time, true)}`
-                        : breakCount - currentCycle === 0
-                        ? `勉強終了まで： ${formatTime(time, true)}`
-                        : `休憩まで： ${formatTime(time, true)}`}
-                </p>
-                <Button onClick={togglePause} className={styles.PauseBtn}>
-                    {isPaused ? (
-                        <PlayCircleOutlineIcon
-                            sx={{
-                                fontSize: 30,
-                            }}
-                        />
-                    ) : (
-                        <PauseCircleFilledIcon
-                            sx={{
-                                fontSize: 30,
-                            }}
-                        />
-                    )}
-                </Button>
-            </div>
-        </>
+        <div className={styles.TimerWrap}>
+            <p className={styles.StudyState}>
+                {isBreak ? "休憩中" : remainingStudyTime === 0 ? "勉強終了" : "勉強中"}
+            </p>
+            <Typography variant="h1" className={orbitron.className}>
+                {formatTime(remainingStudyTime)}
+            </Typography>
+            <p>
+                {isBreak ? `休憩時間残り： ${formatTime(time)}` : `休憩まで： ${formatTime(time)}`}
+            </p>
+            <Button onClick={togglePause} className={styles.PauseBtn}>
+                {isPaused ? (
+                    <PlayCircleOutlineIcon sx={{ fontSize: 30 }} />
+                ) : (
+                    <PauseCircleFilledIcon sx={{ fontSize: 30 }} />
+                )}
+            </Button>
+        </div>
     );
 };
 

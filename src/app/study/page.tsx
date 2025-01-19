@@ -10,7 +10,7 @@ export default function Study() {
             <div className={styles.Page}>
                 <div className={styles.TimerWrap}>
                     <div className={styles.Timer}>
-                        <Timer totalStudyHours={0.01} breakMinutes={0.1} breakCount={4} />
+                        <Timer />
                     </div>
                     <div className={styles.EndBtn}>
                         <Button
