@@ -15,6 +15,8 @@ interface Objectives {
 export default function EditFeld() {
     const [grandObjective, setGrandObjective] = useState<Objectives[]>([]);
     const [weekObjective, setWeekObjective] = useState<Objectives[]>([]);
+    const [grandObjectiveValue, setGrandObjectiveValue] = useState<string | undefined>(undefined);
+    const [weekObjectiveValue, setWeekObjectiveValue] = useState<string | undefined>(undefined);
 
     useEffect(() => {
         const fetchGrandObjectives = async () => {
@@ -66,19 +68,54 @@ export default function EditFeld() {
         fetchObjectives();
     }, []);
 
-    async function UpdateObjective() {
-        const { data, error } = await supabase
-            .from("Objectives")
-            .update({ Objective: "新しい名前" })
-            .eq("", 1);
+    const UpdateObjective = () => {
+        if (grandObjectiveValue && weekObjectiveValue) {
+            async function updateGrandObjective() {
+                const { data, error } = await supabase
+                    .from("Objectives")
+                    .update({ Objective: grandObjectiveValue })
+                    .eq("Size", "grand");
 
-        if (error) {
-            console.error("更新中にエラーが発生しました:", error);
-            return;
+                if (error) {
+                    console.error("Error updating grand objective:", error.message);
+                    return;
+                }
+                console.log(data);
+            }
+            updateGrandObjective();
+        } else if (grandObjectiveValue) {
+            async function updateGrandObjective() {
+                const { data, error } = await supabase
+                    .from("Objectives")
+                    .update({ Objective: grandObjectiveValue })
+                    .eq("Size", "grand");
+                if (error) {
+                    console.error("Error updating grand objective:", error.message);
+                    return;
+                }
+                console.log(data);
+            }
+            updateGrandObjective();
+            console.log("大目標のみ入力されました:", grandObjectiveValue);
+        } else if (weekObjectiveValue) {
+            async function updateWeekObjective() {
+                const { data, error } = await supabase
+                    .from("Objectives")
+                    .update({ Objective: weekObjectiveValue })
+                    .eq("Size", "week");
+
+                if (error) {
+                    console.error("Error updating week objective:", error.message);
+                    return;
+                }
+                console.log(data);
+            }
+            updateWeekObjective();
+            console.log("週目標のみ入力されました:", weekObjectiveValue);
+        } else {
+            console.log("何も入力されていません。");
         }
-
-        console.log("更新されたデータ:", data);
-    }
+    };
 
     return (
         <>
@@ -89,6 +126,7 @@ export default function EditFeld() {
                         label="大目標"
                         placeholder={grandObjective.length > 0 ? grandObjective[0].Objective : ""}
                         helperText="最大50文字"
+                        onChange={(e) => setGrandObjectiveValue(e.target.value)}
                         InputLabelProps={{ shrink: true }}
                         inputProps={{
                             maxLength: 50,
@@ -110,6 +148,7 @@ export default function EditFeld() {
                         label="週目標"
                         placeholder={weekObjective.length > 0 ? weekObjective[0].Objective : ""}
                         helperText="最大50文字"
+                        onChange={(e) => setWeekObjectiveValue(e.target.value)}
                         InputLabelProps={{ shrink: true }}
                         inputProps={{
                             maxLength: 50,
