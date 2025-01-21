@@ -8,7 +8,7 @@ export default function Header() {
             <button>
                 <CgProfile size="30px" color="#333" />
             </button>
-            <Image src="/images/logo.svg" alt="logo" width={150} height={75} />
+            <Image priority={true} src="/images/logo.svg" alt="logo" width={150} height={75} />
         </header>
     );
 }
