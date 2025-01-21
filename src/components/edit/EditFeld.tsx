@@ -66,6 +66,20 @@ export default function EditFeld() {
         fetchObjectives();
     }, []);
 
+    async function UpdateObjective() {
+        const { data, error } = await supabase
+            .from("Objectives")
+            .update({ Objective: "新しい名前" })
+            .eq("", 1);
+
+        if (error) {
+            console.error("更新中にエラーが発生しました:", error);
+            return;
+        }
+
+        console.log("更新されたデータ:", data);
+    }
+
     return (
         <>
             <div className={styles.EditFieldWrap}>
@@ -117,7 +131,9 @@ export default function EditFeld() {
                     <Button variant="outlined">戻る</Button>
                 </Link>
                 <Link href="/home">
-                    <Button variant="contained">編集を終わる</Button>
+                    <Button variant="contained" onClick={UpdateObjective}>
+                        編集を終わる
+                    </Button>
                 </Link>
             </div>
         </>
