@@ -65,8 +65,9 @@ export default function Footer() {
     const handleClickOpen = () => {
         if (condition) {
             setOpenAlreadyStudy(true);
+        } else {
+            setOpen(true);
         }
-        setOpen(true);
     };
 
     const handleCloseAlreadyStudy = () => {
@@ -98,14 +99,14 @@ export default function Footer() {
             </Dialog>
 
             <Dialog open={openNoneSchedule} onClose={handleCloseNoneSchedule}>
-                <DialogTitle>既に勉強中です。</DialogTitle>
+                <DialogTitle>今日のスケジュールが設定されていません。</DialogTitle>
                 <DialogActions>
                     <Button onClick={handleCloseNoneSchedule}>閉じる</Button>
                 </DialogActions>
             </Dialog>
 
             <Dialog open={openAlreadyStudy} onClose={handleCloseAlreadyStudy}>
-                <DialogTitle>今日のスケジュールが設定されていません</DialogTitle>
+                <DialogTitle>既に勉強中です。</DialogTitle>
                 <DialogActions>
                     <Button onClick={handleCloseAlreadyStudy}>閉じる</Button>
                 </DialogActions>
@@ -125,7 +126,7 @@ export default function Footer() {
                     onClick={data ? handleClickOpen : handleOpenNoneSchedule}
                 >
                     <IoBookOutline color="#1976d2" size="30px" />
-                    <p>勉強開始</p>
+                    <p>{condition ? "勉強中" : "勉強開始"}</p>
                 </button>
                 <Link href="/history" className={clsx(styles.NavBtn, styles.HistoryBtn)}>
                     <BsClockHistory color="white" size="24px" />
