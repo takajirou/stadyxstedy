@@ -15,24 +15,62 @@ export default function Footer() {
     // const today = new Date().toISOString().split("T")[0]; // 今日の日付を取得
     const today = new Date("2025-01-01").toISOString().split("T")[0];
     const [data, setData] = useState(null);
+    const [condition, setCondition] = useState<boolean | null>(null);
     const [open, setOpen] = useState(false);
+    const [openAlreadyStudy, setOpenAlreadyStudy] = useState(false);
     const [openNoneSchedule, setOpenNoneSchedule] = useState(false);
 
     useEffect(() => {
-        const fetchObjectives = async () => {
-            const { data, error } = await supabase.from("Schedule").select("*").eq("date", today);
+        const fetchData = async () => {
+            try {
+                const [scheduleRes, conditionRes] = await Promise.all([
+                    supabase.from("Schedule").select("*").eq("date", today),
+                    supabase.from("StudyCondition").select("*"),
+                ]);
+
+                if (scheduleRes.error) {
+                    console.error("Error fetching schedule:", scheduleRes.error);
+                } else {
+                    setData(scheduleRes.data.length > 0 ? scheduleRes.data[0] : null);
+                }
+
+                if (conditionRes.error) {
+                    console.error("Error fetching condition:", conditionRes.error);
+                } else {
+                    setCondition(conditionRes.data[0]?.Condition ?? null);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, [today]);
+
+    const OpenStudyPage = () => {
+        handleClose();
+        const upDateCondition = async () => {
+            const { error } = await supabase
+                .from("StudyCondition")
+                .update({ Condition: true })
+                .eq("Condition", false);
 
             if (error) {
                 console.error("Error fetching objectives", error);
-            } else {
-                setData(data.length > 0 ? data[0] : null);
             }
         };
-        fetchObjectives();
-    });
+        upDateCondition();
+    };
 
     const handleClickOpen = () => {
+        if (condition) {
+            setOpenAlreadyStudy(true);
+        }
         setOpen(true);
+    };
+
+    const handleCloseAlreadyStudy = () => {
+        setOpenAlreadyStudy(false);
     };
 
     const handleClose = () => {
@@ -53,16 +91,23 @@ export default function Footer() {
                 <DialogTitle>勉強を開始しますか？</DialogTitle>
                 <DialogActions>
                     <Button onClick={handleClose}>いいえ</Button>
-                    <Button onClick={handleClose} href="/study">
+                    <Button onClick={OpenStudyPage} href="/study">
                         はい
                     </Button>
                 </DialogActions>
             </Dialog>
 
             <Dialog open={openNoneSchedule} onClose={handleCloseNoneSchedule}>
-                <DialogTitle>今日のスケジュールが設定されていません</DialogTitle>
+                <DialogTitle>既に勉強中です。</DialogTitle>
                 <DialogActions>
                     <Button onClick={handleCloseNoneSchedule}>閉じる</Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog open={openAlreadyStudy} onClose={handleCloseAlreadyStudy}>
+                <DialogTitle>今日のスケジュールが設定されていません</DialogTitle>
+                <DialogActions>
+                    <Button onClick={handleCloseAlreadyStudy}>閉じる</Button>
                 </DialogActions>
             </Dialog>
 
