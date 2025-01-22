@@ -4,10 +4,11 @@ import styles from "@styles/componentStyles/study/Timer.module.scss";
 import React, { useState, useEffect } from "react";
 import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import { Typography, Button } from "@mui/material";
 import { orbitron } from "@/app/fonts";
+import { Button, Typography } from "@mui/material";
+import EndButton from "@/components/study/EndButton";
+import CheckSchedule from "@/components/study/CheckSchedule";
 import { supabase } from "@/lib/supabaseClient";
-import EndButton from "./EndButton";
 
 export default function Timer() {
     // const today = new Date().toISOString().split("T")[0]; // 今日の日付を取得
@@ -130,6 +131,7 @@ export default function Timer() {
                 >
                     予定の確認
                 </Button>
+                <CheckSchedule />
                 <EndButton remainingStudyTime={remainingStudyTime} />
             </div>
         </div>
