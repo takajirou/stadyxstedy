@@ -7,8 +7,9 @@ import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { Typography, Button } from "@mui/material";
 import { orbitron } from "@/app/fonts";
 import { supabase } from "@/lib/supabaseClient";
+import { EndButton } from "./EndButton";
 
-const Timer = () => {
+export const Timer = () => {
     // const today = new Date().toISOString().split("T")[0]; // 今日の日付を取得
     const today = new Date("2025-01-01").toISOString().split("T")[0];
     const [totalStudyHours, setTotalStudyHours] = useState<number | null>(null);
@@ -96,25 +97,41 @@ const Timer = () => {
     }
 
     return (
-        <div className={styles.TimerWrap}>
-            <p className={styles.StudyState}>
-                {isBreak ? "休憩中" : remainingStudyTime === 0 ? "勉強終了" : "勉強中"}
-            </p>
-            <Typography variant="h1" className={orbitron.className}>
-                {formatTime(remainingStudyTime)}
-            </Typography>
-            <p>
-                {isBreak ? `休憩時間残り： ${formatTime(time)}` : `休憩まで： ${formatTime(time)}`}
-            </p>
-            <Button onClick={togglePause} className={styles.PauseBtn}>
-                {isPaused ? (
-                    <PlayCircleOutlineIcon sx={{ fontSize: 30 }} />
-                ) : (
-                    <PauseCircleFilledIcon sx={{ fontSize: 30 }} />
-                )}
-            </Button>
+        <div className={styles.studyWrap}>
+            <div className={styles.TimerWrap}>
+                <p className={styles.StudyState}>
+                    {isBreak ? "休憩中" : remainingStudyTime === 0 ? "勉強終了" : "勉強中"}
+                </p>
+                <Typography variant="h1" className={orbitron.className}>
+                    {formatTime(remainingStudyTime)}
+                </Typography>
+                <p>
+                    {isBreak
+                        ? `休憩時間残り： ${formatTime(time)}`
+                        : `休憩まで： ${formatTime(time)}`}
+                </p>
+                <Button onClick={togglePause} className={styles.PauseBtn}>
+                    {isPaused ? (
+                        <PlayCircleOutlineIcon sx={{ fontSize: 30 }} />
+                    ) : (
+                        <PauseCircleFilledIcon sx={{ fontSize: 30 }} />
+                    )}
+                </Button>
+            </div>
+            <div className={styles.EndBtn}>
+                <Button
+                    variant="outlined"
+                    sx={{
+                        width: "110px",
+                        height: "40px",
+                        fontSize: "1.4rem",
+                        color: "#7194e1",
+                    }}
+                >
+                    予定の確認
+                </Button>
+                <EndButton remainingStudyTime={remainingStudyTime} />
+            </div>
         </div>
     );
 };
-
-export default Timer;
