@@ -3,7 +3,7 @@ import { Dialog, DialogActions, DialogTitle } from "@mui/material";
 import { supabase } from "@/lib/supabaseClient";
 import { Button } from "@mui/material";
 
-export const EndButton = ({ remainingStudyTime }: { remainingStudyTime: number }) => {
+export default function EndButton({ remainingStudyTime }: { remainingStudyTime: number }) {
     const [open, setOpen] = useState(false);
     const upDateCondition = async () => {
         const { error } = await supabase
@@ -54,4 +54,4 @@ export const EndButton = ({ remainingStudyTime }: { remainingStudyTime: number }
             </Button>
         </>
     );
-};
+}

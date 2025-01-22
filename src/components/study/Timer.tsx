@@ -7,9 +7,9 @@ import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { Typography, Button } from "@mui/material";
 import { orbitron } from "@/app/fonts";
 import { supabase } from "@/lib/supabaseClient";
-import { EndButton } from "./EndButton";
+import EndButton from "./EndButton";
 
-export const Timer = () => {
+export default function Timer() {
     // const today = new Date().toISOString().split("T")[0]; // 今日の日付を取得
     const today = new Date("2025-01-01").toISOString().split("T")[0];
     const [totalStudyHours, setTotalStudyHours] = useState<number | null>(null);
@@ -134,4 +134,4 @@ export const Timer = () => {
             </div>
         </div>
     );
-};
+}
