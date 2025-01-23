@@ -2,25 +2,24 @@
 
 import styles from "@styles/componentStyles/home/DayCounter.module.scss";
 import { useEffect, useState } from "react";
+import { supabase } from "@lib/supabaseClient";
 
 interface Counter {
-    count: number;
+    id: number;
+    Count: number;
 }
 
 export default function DayCounter() {
-    const [counter, setCounter] = useState<Counter | null>(null);
+    const [count, setCount] = useState<Counter | null>(null);
 
     useEffect(() => {
         const fetchCounter = async () => {
-            const response = await fetch("/dayCounter.json");
-
-            if (!response.ok) {
-                throw new Error(`Error fetching counter.json: ${response.status}`);
+            const { data, error } = await supabase.from("DayCounter").select("Count").single();
+            if (error) {
+                console.error("Failed to fetch counter", error);
+            } else {
+                setCount(data?.Count || null);
             }
-
-            const data = await response.json();
-
-            setCounter(data);
         };
 
         fetchCounter();
@@ -28,7 +27,7 @@ export default function DayCounter() {
 
     return (
         <div className={styles.DayCounterWrap}>
-            <h1>{counter ? `${counter.count}日連続学習中！` : "loading..."}</h1>
+            <h1>{count !== null ? `${count}日連続学習中！` : "loading..."}</h1>
         </div>
     );
 }
