@@ -120,17 +120,6 @@ export default function Timer() {
                 </Button>
             </div>
             <div className={styles.EndBtn}>
-                <Button
-                    variant="outlined"
-                    sx={{
-                        width: "110px",
-                        height: "40px",
-                        fontSize: "1.4rem",
-                        color: "#7194e1",
-                    }}
-                >
-                    予定の確認
-                </Button>
                 <CheckSchedule />
                 <EndButton remainingStudyTime={remainingStudyTime} />
             </div>
