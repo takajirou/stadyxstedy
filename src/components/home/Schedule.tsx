@@ -25,19 +25,15 @@ export default function Schedule() {
     useEffect(() => {
         const fetchSchedules = async () => {
             try {
-                // テスト用の日付
                 const today = new Date("2025-01-01");
 
-                // selectedScheduleに応じてターゲット日付を計算
                 const targetDate =
                     selectedSchedule === "tomorrow"
                         ? new Date(today.getTime() + 24 * 60 * 60 * 1000)
                         : today;
 
-                // 日付を文字列形式に変換
                 const targetDateString = targetDate.toISOString().split("T")[0];
 
-                // Supabaseからスケジュールデータを取得
                 const { data, error } = await supabase
                     .from("Schedule")
                     .select("*")
