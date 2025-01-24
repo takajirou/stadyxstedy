@@ -23,7 +23,11 @@ export default function Footer() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const scheduleRes = await supabase.from("Schedule").select("*").eq("date", today);
+                const scheduleRes = await supabase
+                    .from("Schedule")
+                    .select("*")
+                    .eq("date", today)
+                    .eq("state", "unfinished");
 
                 if (scheduleRes.error) {
                     console.error("Error fetching schedule:", scheduleRes.error);
