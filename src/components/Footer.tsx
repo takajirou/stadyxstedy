@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import styles from "@styles/componentStyles/Footer.module.scss";
 import { GoHome, GoGear } from "react-icons/go";
 import { PiPlusSquare } from "react-icons/pi";
@@ -12,32 +13,22 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
 export default function Footer() {
+    const pathname = usePathname();
     // const today = new Date().toISOString().split("T")[0]; // 今日の日付を取得
     const today = new Date("2025-01-01").toISOString().split("T")[0];
     const [data, setData] = useState(null);
-    const [condition, setCondition] = useState<boolean | null>(null);
     const [open, setOpen] = useState(false);
-    const [openAlreadyStudy, setOpenAlreadyStudy] = useState(false);
     const [openNoneSchedule, setOpenNoneSchedule] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [scheduleRes, conditionRes] = await Promise.all([
-                    supabase.from("Schedule").select("*").eq("date", today),
-                    supabase.from("StudyCondition").select("*"),
-                ]);
+                const scheduleRes = await supabase.from("Schedule").select("*").eq("date", today);
 
                 if (scheduleRes.error) {
                     console.error("Error fetching schedule:", scheduleRes.error);
                 } else {
                     setData(scheduleRes.data.length > 0 ? scheduleRes.data[0] : null);
-                }
-
-                if (conditionRes.error) {
-                    console.error("Error fetching condition:", conditionRes.error);
-                } else {
-                    setCondition(conditionRes.data[0]?.Condition ?? null);
                 }
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -47,31 +38,8 @@ export default function Footer() {
         fetchData();
     }, [today]);
 
-    const OpenStudyPage = () => {
-        handleClose();
-        const upDateCondition = async () => {
-            const { error } = await supabase
-                .from("StudyCondition")
-                .update({ Condition: true })
-                .eq("Condition", false);
-
-            if (error) {
-                console.error("Error fetching objectives", error);
-            }
-        };
-        upDateCondition();
-    };
-
     const handleClickOpen = () => {
-        if (condition) {
-            setOpenAlreadyStudy(true);
-        } else {
-            setOpen(true);
-        }
-    };
-
-    const handleCloseAlreadyStudy = () => {
-        setOpenAlreadyStudy(false);
+        setOpen(true);
     };
 
     const handleClose = () => {
@@ -88,27 +56,28 @@ export default function Footer() {
 
     return (
         <>
-            <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>勉強を開始しますか？</DialogTitle>
-                <DialogActions>
-                    <Button onClick={handleClose}>いいえ</Button>
-                    <Button onClick={OpenStudyPage} href="/study">
-                        はい
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
+            {pathname === "/study" ? (
+                <Dialog open={open} onClose={handleClose}>
+                    <DialogTitle>既に勉強中です。</DialogTitle>
+                    <DialogActions>
+                        <Button onClick={handleClose}>閉じる</Button>
+                    </DialogActions>
+                </Dialog>
+            ) : (
+                <Dialog open={open} onClose={handleClose}>
+                    <DialogTitle>勉強を開始しますか？</DialogTitle>
+                    <DialogActions>
+                        <Button onClick={handleClose}>いいえ</Button>
+                        <Button onClick={handleClose} href="/study">
+                            はい
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            )}
             <Dialog open={openNoneSchedule} onClose={handleCloseNoneSchedule}>
                 <DialogTitle>今日のスケジュールが設定されていません。</DialogTitle>
                 <DialogActions>
                     <Button onClick={handleCloseNoneSchedule}>閉じる</Button>
-                </DialogActions>
-            </Dialog>
-
-            <Dialog open={openAlreadyStudy} onClose={handleCloseAlreadyStudy}>
-                <DialogTitle>既に勉強中です。</DialogTitle>
-                <DialogActions>
-                    <Button onClick={handleCloseAlreadyStudy}>閉じる</Button>
                 </DialogActions>
             </Dialog>
 
@@ -121,13 +90,13 @@ export default function Footer() {
                     <PiPlusSquare color="white" size="24px" />
                     <p>作成</p>
                 </Link>
-                <button
+                <Button
                     className={clsx(styles.StartBtn)}
                     onClick={data ? handleClickOpen : handleOpenNoneSchedule}
                 >
                     <IoBookOutline color="#1976d2" size="30px" />
-                    <p>{condition ? "勉強中" : "勉強開始"}</p>
-                </button>
+                    <p>{pathname === "/study" ? "勉強中" : "勉強開始"}</p>
+                </Button>
                 <Link href="/history" className={clsx(styles.NavBtn, styles.HistoryBtn)}>
                     <BsClockHistory color="white" size="24px" />
                     <p>履歴</p>

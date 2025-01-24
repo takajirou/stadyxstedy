@@ -12,16 +12,6 @@ export default function EndButton({
 }) {
     const today = new Date("2025-01-01");
     const [open, setOpen] = useState(false);
-    const upDateCondition = async () => {
-        const { error } = await supabase
-            .from("StudyCondition")
-            .update({ Condition: false })
-            .eq("Condition", true);
-
-        if (error) {
-            console.error("Error fetching objectives", error);
-        }
-    };
 
     const TotalTimeUpdate = async () => {
         const { error } = await supabase
@@ -34,14 +24,8 @@ export default function EndButton({
         }
     };
 
-    const Update = () => {
-        TotalTimeUpdate();
-        upDateCondition();
-    };
-
     const CloseAndUpdate = () => {
         TotalTimeUpdate();
-        upDateCondition();
         handleClose();
     };
 
@@ -71,7 +55,7 @@ export default function EndButton({
                     height: "40px",
                     fontSize: "1.4rem",
                 }}
-                onClick={remainingStudyTime === 0 ? Update : EndStudyCheck}
+                onClick={remainingStudyTime === 0 ? TotalTimeUpdate : EndStudyCheck}
                 href={remainingStudyTime === 0 ? "/studySummary" : undefined}
             >
                 勉強終了
