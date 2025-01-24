@@ -1,7 +1,7 @@
 import Objective from "@/components/home/Objective";
 import Schedule from "@/components/home/Schedule";
 import styles from "@styles/appStyles/home/Page.module.scss";
-import DayCounter from "@/components/home/DayCounter";
+// import DayCounter from "@/components/home/DayCounter";
 import Header from "@/components/Header";
 
 export default function Home() {
@@ -12,7 +12,7 @@ export default function Home() {
                 <Objective Objective="grand" />
                 <Objective Objective="week" />
                 <Schedule />
-                <DayCounter />
+                {/* <DayCounter /> */}
             </div>
         </>
     );
