@@ -19,43 +19,35 @@ interface Schedule {
 
 export default function Schedule() {
     const [filteredSchedules, setFilteredSchedules] = useState<Schedule[]>([]);
-    const [error, setError] = useState<string | null>(null);
+
     const [selectedSchedule, setSelectedSchedule] = useState("today");
 
     useEffect(() => {
         const fetchSchedules = async () => {
-            try {
-                const today = new Date("2025-01-01");
+            const today = new Date("2025-01-01");
 
-                const targetDate =
-                    selectedSchedule === "tomorrow"
-                        ? new Date(today.getTime() + 24 * 60 * 60 * 1000)
-                        : today;
+            const targetDate =
+                selectedSchedule === "tomorrow"
+                    ? new Date(today.getTime() + 24 * 60 * 60 * 1000)
+                    : today;
 
-                const targetDateString = targetDate.toISOString().split("T")[0];
+            const targetDateString = targetDate.toISOString().split("T")[0];
 
-                const { data, error } = await supabase
-                    .from("Schedule")
-                    .select("*")
-                    .eq("date", targetDateString)
-                    .eq("state", "unfinished");
+            const { data, error } = await supabase
+                .from("Schedule")
+                .select("*")
+                .eq("date", targetDateString)
+                .eq("state", "unfinished");
 
-                if (error) {
-                    throw new Error(error.message);
-                }
-
-                setFilteredSchedules(data || []);
-            } catch (err) {
-                setError(err instanceof Error ? err.message : "Unknown error");
+            if (error) {
+                throw new Error(error.message);
             }
+
+            setFilteredSchedules(data || []);
         };
 
         fetchSchedules();
     }, [selectedSchedule]);
-
-    if (error) {
-        return <div className={styles.Error}>エラーが発生しました: {error}</div>;
-    }
 
     return (
         <div className={styles.ScheduleWrap}>
