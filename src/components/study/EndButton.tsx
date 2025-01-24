@@ -1,7 +1,10 @@
+"use client";
+
 import { useState } from "react";
 import { Dialog, DialogActions, DialogTitle } from "@mui/material";
 import { supabase } from "@/lib/supabaseClient";
 import { Button } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function EndButton({
     remainingStudyTime,
@@ -10,6 +13,7 @@ export default function EndButton({
     remainingStudyTime: number;
     totalStudyMinutes: number;
 }) {
+    const router = useRouter();
     const today = new Date("2025-01-01");
     const [open, setOpen] = useState(false);
 
@@ -22,6 +26,8 @@ export default function EndButton({
         if (error) {
             console.error("Error fetching objectives", error);
         }
+
+        router.push("/studySummary");
     };
 
     const CloseAndUpdate = () => {
@@ -42,9 +48,7 @@ export default function EndButton({
                 <DialogTitle>勉強がまだ途中ですが終了しますか？</DialogTitle>
                 <DialogActions>
                     <Button onClick={handleClose}>いいえ</Button>
-                    <Button onClick={CloseAndUpdate} href="/studySummary">
-                        はい
-                    </Button>
+                    <Button onClick={CloseAndUpdate}>はい</Button>
                 </DialogActions>
             </Dialog>
 
@@ -56,7 +60,6 @@ export default function EndButton({
                     fontSize: "1.4rem",
                 }}
                 onClick={remainingStudyTime === 0 ? TotalTimeUpdate : EndStudyCheck}
-                href={remainingStudyTime === 0 ? "/studySummary" : undefined}
             >
                 勉強終了
             </Button>

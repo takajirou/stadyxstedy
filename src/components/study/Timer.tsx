@@ -80,10 +80,9 @@ export default function Timer() {
 
     useEffect(() => {
         if (!isPaused && !isBreak) {
-            // 残り勉強時間が減少するたびに合計勉強時間を更新
             const interval = setInterval(() => {
                 setTotalStudyMinutes((prevMinutes) => prevMinutes + 1);
-            }, 60000); // 1分ごとに更新
+            }, 60000);
 
             return () => clearInterval(interval);
         }
