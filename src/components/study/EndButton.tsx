@@ -3,7 +3,14 @@ import { Dialog, DialogActions, DialogTitle } from "@mui/material";
 import { supabase } from "@/lib/supabaseClient";
 import { Button } from "@mui/material";
 
-export default function EndButton({ remainingStudyTime }: { remainingStudyTime: number }) {
+export default function EndButton({
+    remainingStudyTime,
+    totalStudyMinutes,
+}: {
+    remainingStudyTime: number;
+    totalStudyMinutes: number;
+}) {
+    const today = new Date("2025-01-01");
     const [open, setOpen] = useState(false);
     const upDateCondition = async () => {
         const { error } = await supabase
@@ -16,7 +23,24 @@ export default function EndButton({ remainingStudyTime }: { remainingStudyTime: 
         }
     };
 
+    const TotalTimeUpdate = async () => {
+        const { error } = await supabase
+            .from("Schedule")
+            .update({ studyMinutes: totalStudyMinutes })
+            .eq("date", today.toISOString().split("T")[0]);
+
+        if (error) {
+            console.error("Error fetching objectives", error);
+        }
+    };
+
+    const Update = () => {
+        TotalTimeUpdate();
+        upDateCondition();
+    };
+
     const CloseAndUpdate = () => {
+        TotalTimeUpdate();
         upDateCondition();
         handleClose();
     };
@@ -34,7 +58,7 @@ export default function EndButton({ remainingStudyTime }: { remainingStudyTime: 
                 <DialogTitle>勉強がまだ途中ですが終了しますか？</DialogTitle>
                 <DialogActions>
                     <Button onClick={handleClose}>いいえ</Button>
-                    <Button onClick={CloseAndUpdate} href="/home">
+                    <Button onClick={CloseAndUpdate} href="/studySummary">
                         はい
                     </Button>
                 </DialogActions>
@@ -47,8 +71,8 @@ export default function EndButton({ remainingStudyTime }: { remainingStudyTime: 
                     height: "40px",
                     fontSize: "1.4rem",
                 }}
-                onClick={remainingStudyTime === 0 ? upDateCondition : EndStudyCheck}
-                href={remainingStudyTime === 0 ? "/home" : undefined}
+                onClick={remainingStudyTime === 0 ? Update : EndStudyCheck}
+                href={remainingStudyTime === 0 ? "/studySummary" : undefined}
             >
                 勉強終了
             </Button>

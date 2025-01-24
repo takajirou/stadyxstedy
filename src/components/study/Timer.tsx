@@ -24,6 +24,8 @@ export default function Timer() {
     const [isPaused, setIsPaused] = useState(false);
     const [isBreak, setIsBreak] = useState(false);
 
+    const [totalStudyMinutes, setTotalStudyMinutes] = useState<number>(0);
+
     useEffect(() => {
         const fetchScheduleData = async () => {
             try {
@@ -76,6 +78,17 @@ export default function Timer() {
         }
     }, [time, isPaused, isBreak, currentCycle, breakCount, remainingStudyTime, breakMinutes]);
 
+    useEffect(() => {
+        if (!isPaused && !isBreak) {
+            // 残り勉強時間が減少するたびに合計勉強時間を更新
+            const interval = setInterval(() => {
+                setTotalStudyMinutes((prevMinutes) => prevMinutes + 1);
+            }, 60000); // 1分ごとに更新
+
+            return () => clearInterval(interval);
+        }
+    }, [isPaused, isBreak]);
+
     const formatTime = (time: number) => {
         const h = Math.floor(time / 3600);
         const m = Math.floor((time % 3600) / 60);
@@ -121,7 +134,10 @@ export default function Timer() {
             </div>
             <div className={styles.EndBtn}>
                 <CheckSchedule />
-                <EndButton remainingStudyTime={remainingStudyTime} />
+                <EndButton
+                    remainingStudyTime={remainingStudyTime}
+                    totalStudyMinutes={totalStudyMinutes}
+                />
             </div>
         </div>
     );
