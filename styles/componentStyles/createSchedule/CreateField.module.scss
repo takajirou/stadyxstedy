@@ -1,0 +1,23 @@
+.FieldsWrap {
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .Fields {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 30px;
+        display: flex;
+        div {
+            display: flex;
+            align-items: center;
+            p {
+                margin: 0 5px;
+            }
+        }
+    }
+    .TextFields {
+        margin-top: 30px;
+    }
+}
