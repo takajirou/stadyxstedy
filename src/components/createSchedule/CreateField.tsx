@@ -22,6 +22,7 @@ export default function CreateField() {
         setStudyTime(studyHours * 60 + studyMinutes);
     }, [studyHours, studyMinutes]);
 
+    console.log(studyTime, breakTime, breadkCount);
     return (
         <div className={styles.FieldsWrap}>
             <div className={styles.Fields}>
