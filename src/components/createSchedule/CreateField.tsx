@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import styles from "@styles/componentStyles/createSchedule/CreateField.module.scss";
+import Button from "@mui/material/Button";
 
 const array = [0, 10, 20, 30, 40, 50];
 const breakArray = [0, 5, 10, 15, 20, 25, 30];
@@ -125,7 +126,7 @@ export default function CreateField() {
                     }}
                     sx={{
                         "& .MuiInputBase-input": {
-                            padding: "15px",
+                            padding: "10px",
                         },
                         "& label": {
                             fontSize: "1.5rem",
@@ -150,9 +151,6 @@ export default function CreateField() {
                         style: { fontSize: "1.5rem" },
                     }}
                     sx={{
-                        "& .MuiInputBase-input": {
-                            padding: "5px",
-                        },
                         "& label": {
                             fontSize: "1.5rem",
                         },
@@ -161,6 +159,11 @@ export default function CreateField() {
                         },
                     }}
                 />
+            </div>
+
+            <div className={styles.BtnWrap}>
+                <Button variant="outlined">戻る</Button>
+                <Button variant="contained">スケジュールを登録する</Button>
             </div>
         </div>
     );
