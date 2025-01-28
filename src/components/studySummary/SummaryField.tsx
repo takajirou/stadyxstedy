@@ -79,7 +79,7 @@ export default function SummaryField() {
                         </ToggleButtonGroup>
                     </div>
 
-                    <h2>学習内容のまとめ</h2>
+                    <h2>学習した内容のまとめ</h2>
                     <textarea></textarea>
                     <div className={styles.ButtonWrap}>
                         <Button variant="outlined">ホームに戻る</Button>
