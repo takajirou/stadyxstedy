@@ -55,8 +55,10 @@ export default function SummaryField() {
                             {scheduleData.studyMinutes < 60
                                 ? `${scheduleData.studyMinutes}分`
                                 : `${Math.floor(scheduleData.studyMinutes / 60)}時間 ${
-                                      scheduleData.studyMinutes % 60
-                                  }分`}
+                                      scheduleData.studyMinutes % 60 === 0
+                                          ? ""
+                                          : ` ${scheduleData.studyMinutes % 60}分`
+                                  }`}
                         </p>
                     </div>
                     <div className={styles.Fields}>
