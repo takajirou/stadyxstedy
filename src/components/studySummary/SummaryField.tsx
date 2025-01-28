@@ -21,8 +21,9 @@ interface Schedule {
 export default function SummaryField() {
     const [scheduleData, setScheduleData] = useState<Schedule>();
     const [achievement, setAchievement] = useState("Achieved");
-    const today = new Date("2025-01-01");
+    const [review, setReview] = useState("振り返りなし");
     useEffect(() => {
+        const today = new Date("2025-01-01");
         const fetchScheduleData = async () => {
             const { data, error } = await supabase
                 .from("Schedule")
@@ -36,11 +37,26 @@ export default function SummaryField() {
             }
         };
         fetchScheduleData();
-    });
+    }, []);
 
     const handleChange = (event: React.MouseEvent<HTMLElement>, newAchievement: string) => {
         if (newAchievement !== null) {
             setAchievement(newAchievement);
+        }
+    };
+
+    const ReviewChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setReview(e.target.value);
+    };
+
+    const UpdateScheduleData = async () => {
+        const { error } = await supabase
+            .from("Schedule")
+            .update({ Achivement: achievement, studyReview: review })
+            .eq("id", scheduleData?.id)
+            .single();
+        if (error) {
+            console.error("Error fetching schedule data:", error);
         }
     };
 
@@ -80,10 +96,14 @@ export default function SummaryField() {
                     </div>
 
                     <h2>学習した内容のまとめ</h2>
-                    <textarea></textarea>
+                    <textarea onChange={ReviewChange}></textarea>
                     <div className={styles.ButtonWrap}>
-                        <Button variant="outlined">ホームに戻る</Button>
-                        <Button variant="contained">明日のスケジュールを作成する</Button>
+                        <Button variant="outlined" href="/home" onClick={UpdateScheduleData}>
+                            ホームに戻る
+                        </Button>
+                        <Button variant="contained" href="/home" onClick={UpdateScheduleData}>
+                            明日のスケジュールを作成する
+                        </Button>
                     </div>
                 </div>
             ) : (
