@@ -110,7 +110,7 @@ export default function CreateField() {
             </div>
 
             <div className={styles.TextFields}>
-                <h2>勉強目標</h2>
+                <h2>目標</h2>
                 <TextField
                     fullWidth
                     onChange={(e) => console.log(e.target.value)}
