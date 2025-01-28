@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import styles from "@styles/componentStyles/studySummary/SummaryField.module.scss";
 import { supabase } from "@lib/supabaseClient";
+import { ToggleButtonGroup, ToggleButton } from "@mui/material";
+import Button from "@mui/material/Button";
 
 interface Schedule {
     id: number;
@@ -17,6 +20,7 @@ interface Schedule {
 
 export default function SummaryField() {
     const [scheduleData, setScheduleData] = useState<Schedule>();
+    const [achievement, setAchievement] = useState("Achieved");
     const today = new Date("2025-01-01");
     useEffect(() => {
         const fetchScheduleData = async () => {
@@ -34,19 +38,51 @@ export default function SummaryField() {
         fetchScheduleData();
     });
 
+    const handleChange = (event: React.MouseEvent<HTMLElement>, newAchievement: string) => {
+        if (newAchievement !== null) {
+            setAchievement(newAchievement);
+        }
+    };
+
     return (
         <div>
             {scheduleData ? (
-                <div>
+                <div className={styles.FieldsWrap}>
                     <h1>学習リワード</h1>
-                    <h2>学習時間</h2>
-                    <p>{scheduleData.studyMinutes}</p>
-                    <h2>目標</h2>
-                    <p>{scheduleData.object}</p>
-                    <h2>目標達成</h2>
+                    <div className={styles.Fields}>
+                        <h2>学習時間</h2>
+                        <p>
+                            {scheduleData.studyMinutes < 60
+                                ? `${scheduleData.studyMinutes}分`
+                                : `${Math.floor(scheduleData.studyMinutes / 60)}時間 ${
+                                      scheduleData.studyMinutes % 60
+                                  }分`}
+                        </p>
+                    </div>
+                    <div className={styles.Fields}>
+                        <h2>目標</h2>
+                        <p>{scheduleData.object}</p>
+                    </div>
+
+                    <div className={styles.Fields}>
+                        <h2>目標達成</h2>
+                        <ToggleButtonGroup
+                            color="primary"
+                            value={achievement}
+                            onChange={handleChange}
+                            exclusive
+                        >
+                            <ToggleButton value="Achieved">達成できた</ToggleButton>
+                            <ToggleButton value="NoAchieved">達成できなかった</ToggleButton>
+                        </ToggleButtonGroup>
+                    </div>
 
                     <h2>学習内容のまとめ</h2>
                     <textarea></textarea>
+                    <div className={styles.ButtonWrap}>
+                        <Button variant="outlined">ホームに戻る</Button>
+                        <Button variant="contained">明日のスケジュールを作成する</Button>
+                    </div>
                 </div>
             ) : (
                 <p>loading...</p>

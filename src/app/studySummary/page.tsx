@@ -1,15 +1,13 @@
 import Header from "@/components/Header";
 import SummaryField from "@/components/studySummary/SummaryField";
-import Button from "@mui/material/Button";
+import styles from "@styles/appStyles/studySummary/Page.module.scss";
 
 export default function StudySummary() {
     return (
         <>
             <Header />
-            <div>
+            <div className={styles.SummaryWrap}>
                 <SummaryField />
-                <Button variant="outlined">ホームに戻る</Button>
-                <Button variant="contained">明日のスケジュールを作成する</Button>
             </div>
         </>
     );
