@@ -90,7 +90,7 @@ export default function Footer() {
                     <GoHome color="white" size="24px" />
                     <p>ホーム</p>
                 </Link>
-                <Link href="/create" className={clsx(styles.NavBtn, styles.CreateBtn)}>
+                <Link href="/createScheudule" className={clsx(styles.NavBtn, styles.CreateBtn)}>
                     <PiPlusSquare color="white" size="24px" />
                     <p>作成</p>
                 </Link>
