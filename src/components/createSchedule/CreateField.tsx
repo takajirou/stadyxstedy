@@ -67,7 +67,7 @@ export default function CreateField() {
                 </div>
             </div>
             <div className={styles.Fields}>
-                <h2>休憩時間</h2>
+                <h2>休憩</h2>
                 <div>
                     <Select
                         onChange={(e) => setBreakTime(Number(e.target.value))}
@@ -86,11 +86,6 @@ export default function CreateField() {
                         ))}
                     </Select>
                     <p>分</p>
-                </div>
-            </div>
-            <div className={styles.Fields}>
-                <h2>休憩回数</h2>
-                <div>
                     <Select
                         onChange={(e) => setBreakCount(Number(e.target.value))}
                         defaultValue={0}
@@ -110,7 +105,6 @@ export default function CreateField() {
                     <p>回</p>
                 </div>
             </div>
-
             <div className={styles.TextFields}>
                 <h2>目標</h2>
                 <TextField
