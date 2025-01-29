@@ -2,7 +2,8 @@
 
 import { TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-// import { supabase } from "@lib/supabaseClient";
+import { supabase } from "@lib/supabaseClient";
+import { useRouter } from "next/navigation";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import styles from "@styles/componentStyles/createSchedule/CreateField.module.scss";
@@ -13,6 +14,9 @@ const breakArray = [0, 5, 10, 15, 20, 25, 30];
 const breakCountArray = [0, 1, 2, 3, 4, 5];
 
 export default function CreateField() {
+    const router = useRouter();
+    const [objective, setObjective] = useState("");
+    const [studyContent, setStudyContent] = useState("");
     const [studyHours, setStudyHours] = useState(0);
     const [studyMinutes, setStudyMinutes] = useState(0);
     const [studyTime, setStudyTime] = useState(0);
@@ -23,7 +27,25 @@ export default function CreateField() {
         setStudyTime(studyHours * 60 + studyMinutes);
     }, [studyHours, studyMinutes]);
 
-    console.log(studyTime, breakTime, breadkCount);
+    const CreateSchedule = async () => {
+        const { error } = await supabase.from("Schedule").insert([
+            {
+                date: new Date().toISOString().split("T")[0],
+                studyTime: studyTime,
+                breakTime: breakTime,
+                breakCount: breadkCount,
+                object: objective,
+                studyContent: studyContent,
+                state: "unfinished",
+            },
+        ]);
+
+        if (error) {
+            console.error("Error inserting data:", error);
+        }
+
+        router.push("/home");
+    };
     return (
         <div className={styles.FieldsWrap}>
             <div className={styles.Fields}>
@@ -109,7 +131,7 @@ export default function CreateField() {
                 <h2>目標</h2>
                 <TextField
                     fullWidth
-                    onChange={(e) => console.log(e.target.value)}
+                    onChange={(e) => setObjective(e.target.value)}
                     variant="outlined"
                     placeholder="例）英語過去問で80点以上取れるようにする"
                     helperText="最大20文字"
@@ -136,6 +158,7 @@ export default function CreateField() {
                 <TextField
                     fullWidth
                     multiline
+                    onChange={(e) => setStudyContent(e.target.value)}
                     variant="outlined"
                     placeholder="例）リスニング過去問を何度も解く"
                     helperText="最大50文字"
@@ -156,8 +179,12 @@ export default function CreateField() {
             </div>
 
             <div className={styles.BtnWrap}>
-                <Button variant="outlined">戻る</Button>
-                <Button variant="contained">スケジュールを登録する</Button>
+                <Button variant="outlined" sx={{ fontSize: "1.4rem" }} href="/home">
+                    ホームに戻る
+                </Button>
+                <Button variant="contained" sx={{ fontSize: "1.4rem" }} onClick={CreateSchedule}>
+                    スケジュールを登録する
+                </Button>
             </div>
         </div>
     );

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import styles from "@styles/componentStyles/studySummary/SummaryField.module.scss";
 import { supabase } from "@lib/supabaseClient";
 import { ToggleButtonGroup, ToggleButton } from "@mui/material";
+import { useRouter } from "next/navigation";
 import Button from "@mui/material/Button";
 
 interface Schedule {
@@ -19,6 +20,7 @@ interface Schedule {
 }
 
 export default function SummaryField() {
+    const router = useRouter();
     const [scheduleData, setScheduleData] = useState<Schedule>();
     const [achievement, setAchievement] = useState("Achieved");
     const [review, setReview] = useState("振り返りなし");
@@ -58,6 +60,7 @@ export default function SummaryField() {
         if (error) {
             console.error("Error fetching schedule data:", error);
         }
+        router.push("/home");
     };
 
     return (
@@ -98,10 +101,10 @@ export default function SummaryField() {
                     <h2>学習した内容のまとめ</h2>
                     <textarea onChange={ReviewChange}></textarea>
                     <div className={styles.ButtonWrap}>
-                        <Button variant="outlined" href="/home" onClick={UpdateScheduleData}>
+                        <Button variant="outlined" value="home" onClick={UpdateScheduleData}>
                             ホームに戻る
                         </Button>
-                        <Button variant="contained" href="/home" onClick={UpdateScheduleData}>
+                        <Button variant="contained" value="tommorow" onClick={UpdateScheduleData}>
                             明日のスケジュールを作成する
                         </Button>
                     </div>
