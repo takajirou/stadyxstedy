@@ -18,13 +18,16 @@ interface Schedule {
 }
 
 export default function Schedule() {
-    const [filteredSchedules, setFilteredSchedules] = useState<Schedule[]>([]);
+    const [filteredSchedules, setFilteredSchedules] = useState<Schedule | null>(null);
 
     const [selectedSchedule, setSelectedSchedule] = useState("today");
 
+    const [studyHours, setStudyHours] = useState<number>();
+    const [studyMinutes, setStudyMinutes] = useState<number>();
+
     useEffect(() => {
         const fetchSchedules = async () => {
-            const today = new Date("2025-01-01");
+            const today = new Date();
 
             const targetDate =
                 selectedSchedule === "tomorrow"
@@ -37,17 +40,25 @@ export default function Schedule() {
                 .from("Schedule")
                 .select("*")
                 .eq("date", targetDateString)
-                .eq("state", "unfinished");
+                .eq("state", "unfinished")
+                .single();
 
             if (error) {
                 throw new Error(error.message);
             }
 
-            setFilteredSchedules(data || []);
+            setFilteredSchedules(data || null);
         };
 
         fetchSchedules();
     }, [selectedSchedule]);
+
+    useEffect(() => {
+        if (filteredSchedules) {
+            setStudyMinutes(filteredSchedules.studyTime % 60);
+            setStudyHours(Math.floor(filteredSchedules.studyTime / 60));
+        }
+    }, [filteredSchedules]);
 
     return (
         <div className={styles.ScheduleWrap}>
@@ -77,63 +88,45 @@ export default function Schedule() {
                     明日のスケジュール
                 </ToggleButton>
             </ToggleButtonGroup>
-            {filteredSchedules.length === 0 ? (
-                <div
-                    className={clsx(
-                        styles.ScheduleContents,
-                        filteredSchedules.length === 0 && styles.Empty
+
+            <>
+                <div className={clsx(styles.ScheduleContents, !filteredSchedules && styles.Empty)}>
+                    {!filteredSchedules ? (
+                        <Button
+                            variant="contained"
+                            className={styles.EmptyButton}
+                            href="/createSchedule"
+                        >
+                            <p>スケジュールを作成</p>
+                        </Button>
+                    ) : (
+                        ""
                     )}
-                >
-                    <Button variant="contained" className={styles.EmptyButton}>
-                        <p>スケジュールを作成</p>
-                    </Button>
                     <div className={styles.ScheduleTarget}>
                         <h2>目標</h2>
-                        <p></p>
+                        <p>{filteredSchedules ? filteredSchedules.object : ""}</p>
                     </div>
                     <div className={styles.StudyTime}>
                         <h2>勉強時間</h2>
-                        <p></p>
+                        <p>{filteredSchedules ? `${studyHours}時間 ${studyMinutes}分` : ""}</p>
                     </div>
                     <div className={styles.BreakTime}>
                         <h2>休憩時間</h2>
-                        <p></p>
+                        <p>
+                            {filteredSchedules ? ` ${filteredSchedules.breakTime}分 x ` : ""}
+                            {filteredSchedules ? `${filteredSchedules.breakCount}回` : ""}
+                        </p>
                     </div>
                     <div className={styles.StudyContent}>
                         <h2>勉強内容</h2>
-                        <textarea readOnly className={styles.StudyContent}></textarea>
+                        <textarea
+                            value={filteredSchedules ? filteredSchedules.studyContent : ""}
+                            readOnly
+                            className={styles.StudyContent}
+                        ></textarea>
                     </div>
                 </div>
-            ) : (
-                <>
-                    {filteredSchedules.map((schedule) => (
-                        <div key={schedule.id} className={styles.ScheduleContents}>
-                            <div className={styles.ScheduleTarget}>
-                                <h2>目標</h2>
-                                <p>{schedule.object}</p>
-                            </div>
-                            <div className={styles.StudyTime}>
-                                <h2>勉強時間</h2>
-                                <p>{schedule.studyTime}時間</p>
-                            </div>
-                            <div className={styles.BreakTime}>
-                                <h2>休憩時間</h2>
-                                <p>
-                                    {schedule.breakTime}分 x {schedule.breakCount}回
-                                </p>
-                            </div>
-                            <div className={styles.StudyContent}>
-                                <h2>勉強内容</h2>
-                                <textarea
-                                    value={schedule.studyContent}
-                                    readOnly
-                                    className={styles.StudyContent}
-                                ></textarea>
-                            </div>
-                        </div>
-                    ))}
-                </>
-            )}
+            </>
         </div>
     );
 }
