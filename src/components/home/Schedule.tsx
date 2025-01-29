@@ -19,9 +19,7 @@ interface Schedule {
 
 export default function Schedule() {
     const [filteredSchedules, setFilteredSchedules] = useState<Schedule | null>(null);
-
     const [selectedSchedule, setSelectedSchedule] = useState("today");
-
     const [studyHours, setStudyHours] = useState<number>();
     const [studyMinutes, setStudyMinutes] = useState<number>();
 
@@ -108,7 +106,13 @@ export default function Schedule() {
                     </div>
                     <div className={styles.StudyTime}>
                         <h2>勉強時間</h2>
-                        <p>{filteredSchedules ? `${studyHours}時間 ${studyMinutes}分` : ""}</p>
+                        <p>
+                            {filteredSchedules
+                                ? `${studyHours}時間 ${
+                                      studyMinutes === 0 ? "" : ` ${studyMinutes}分`
+                                  }`
+                                : ""}
+                        </p>
                     </div>
                     <div className={styles.BreakTime}>
                         <h2>休憩時間</h2>

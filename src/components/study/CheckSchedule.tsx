@@ -24,15 +24,18 @@ interface Objective {
 const CheckSchedule = () => {
     const [open, setOpen] = useState(false);
     const [filteredSchedules, setFilteredSchedules] = useState<Schedule>();
-    const [weekObjective, setWeekObjective] = useState<Objective[]>();
-    const [grandObjective, setGrandObjective] = useState<Objective[]>();
+    const [weekObjective, setWeekObjective] = useState<Objective>();
+    const [grandObjective, setGrandObjective] = useState<Objective>();
+    const [studyHours, setStudyHours] = useState<number>();
+    const [studyMinutes, setStudyMinutes] = useState<number>();
 
     useEffect(() => {
         const fetchWeekObjective = async () => {
             const { data, error } = await supabase
                 .from("Objectives")
                 .select("*")
-                .eq("Size", "week");
+                .eq("Size", "week")
+                .single();
 
             if (error) {
                 throw new Error(error.message);
@@ -43,7 +46,8 @@ const CheckSchedule = () => {
             const { data, error } = await supabase
                 .from("Objectives")
                 .select("*")
-                .eq("Size", "grand");
+                .eq("Size", "grand")
+                .single();
 
             if (error) {
                 throw new Error(error.message);
@@ -52,7 +56,7 @@ const CheckSchedule = () => {
             }
         };
         const fetchSchedules = async () => {
-            const today = new Date("2025-01-01");
+            const today = new Date();
 
             const targetDateString = today.toISOString().split("T")[0];
 
@@ -87,6 +91,13 @@ const CheckSchedule = () => {
         setOpen(isOpen);
     };
 
+    useEffect(() => {
+        if (filteredSchedules) {
+            setStudyMinutes(filteredSchedules.studyTime % 60);
+            setStudyHours(Math.floor(filteredSchedules.studyTime / 60));
+        }
+    }, [filteredSchedules]);
+
     return (
         <>
             <Button
@@ -116,7 +127,7 @@ const CheckSchedule = () => {
                         <ListItem>
                             <ListItemText
                                 primary="大目標"
-                                secondary={grandObjective ? grandObjective[0].Objective : ""}
+                                secondary={grandObjective ? grandObjective.Objective : ""}
                                 classes={{
                                     primary: styles.primaryText,
                                     secondary: styles.secondaryText,
@@ -127,7 +138,7 @@ const CheckSchedule = () => {
                         <ListItem>
                             <ListItemText
                                 primary="週目標"
-                                secondary={weekObjective ? weekObjective[0].Objective : ""}
+                                secondary={weekObjective ? weekObjective.Objective : ""}
                                 classes={{
                                     primary: styles.primaryText,
                                     secondary: styles.secondaryText,
@@ -150,7 +161,11 @@ const CheckSchedule = () => {
                             <ListItemText
                                 primary="勉強時間"
                                 secondary={
-                                    filteredSchedules ? `${filteredSchedules.studyTime}時間` : ""
+                                    filteredSchedules
+                                        ? `${studyHours}時間 ${
+                                              studyMinutes === 0 ? "" : ` ${studyMinutes}分`
+                                          }`
+                                        : ""
                                 }
                                 classes={{
                                     primary: styles.primaryText,

@@ -12,13 +12,11 @@ import { supabase } from "@/lib/supabaseClient";
 import Loading from "@/components/Loading";
 
 export default function Timer() {
-    // const today = new Date().toISOString().split("T")[0]; // 今日の日付を取得
-    const today = new Date("2025-01-01").toISOString().split("T")[0];
+    const today = new Date().toISOString().split("T")[0];
     const [totalStudyHours, setTotalStudyHours] = useState<number | null>(null);
     const [breakMinutes, setBreakMinutes] = useState<number | null>(null);
     const [breakCount, setBreakCount] = useState<number | null>(null);
     const [error, setError] = useState<string | null>(null);
-
     const [time, setTime] = useState<number>(0);
     const [remainingStudyTime, setRemainingStudyTime] = useState<number>(0);
     const [currentCycle, setCurrentCycle] = useState<number>(1);
@@ -42,8 +40,12 @@ export default function Timer() {
                 setBreakMinutes(data.breakTime);
                 setBreakCount(data.breakCount);
 
-                const totalStudySeconds = data.studyTime * 3600;
+                const totalStudyMinutes = data.studyTime;
+                setTotalStudyMinutes(totalStudyMinutes);
+
+                const totalStudySeconds = totalStudyMinutes * 60;
                 const studyPerCycleSeconds = totalStudySeconds / data.breakCount;
+
                 setTime(studyPerCycleSeconds);
                 setRemainingStudyTime(totalStudySeconds);
             } catch (err) {
