@@ -13,7 +13,11 @@ const array = [0, 10, 20, 30, 40, 50];
 const breakArray = [0, 5, 10, 15, 20, 25, 30];
 const breakCountArray = [0, 1, 2, 3, 4, 5];
 
-export default function CreateField() {
+interface dateProps {
+    date: string;
+}
+
+export default function CreateField({ date }: dateProps) {
     const router = useRouter();
     const [objective, setObjective] = useState("");
     const [studyContent, setStudyContent] = useState("");
@@ -21,7 +25,16 @@ export default function CreateField() {
     const [studyMinutes, setStudyMinutes] = useState(0);
     const [studyTime, setStudyTime] = useState(0);
     const [breakTime, setBreakTime] = useState(0);
-    const [breadkCount, setBreakCount] = useState(0);
+    const [breakCount, setBreakCount] = useState(0);
+    let CreateDate;
+
+    if (date === "today") {
+        CreateDate = new Date().toISOString().split("T")[0];
+    } else {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        CreateDate = tomorrow.toISOString().split("T")[0];
+    }
 
     useEffect(() => {
         setStudyTime(studyHours * 60 + studyMinutes);
@@ -30,10 +43,10 @@ export default function CreateField() {
     const CreateSchedule = async () => {
         const { error } = await supabase.from("Schedule").insert([
             {
-                date: new Date().toISOString().split("T")[0],
+                date: CreateDate,
                 studyTime: studyTime,
                 breakTime: breakTime,
-                breakCount: breadkCount,
+                breakCount: breakCount,
                 object: objective,
                 studyContent: studyContent,
                 state: "unfinished",
