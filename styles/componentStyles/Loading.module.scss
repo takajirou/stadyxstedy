@@ -1,0 +1,17 @@
+.loadingWrap {
+    width: 100vw;
+    height: calc(100vh - 500px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    video {
+        width: 200px;
+        height: 200px;
+    }
+    p {
+        font-size: 2rem;
+        margin-top: 20px;
+        font-weight: 500;
+    }
+}
