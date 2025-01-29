@@ -34,16 +34,12 @@ export default function Schedule() {
 
             const targetDateString = targetDate.toISOString().split("T")[0];
 
-            const { data, error } = await supabase
+            const { data } = await supabase
                 .from("Schedule")
                 .select("*")
                 .eq("date", targetDateString)
                 .eq("state", "unfinished")
                 .single();
-
-            if (error) {
-                throw new Error(error.message);
-            }
 
             setFilteredSchedules(data || null);
         };

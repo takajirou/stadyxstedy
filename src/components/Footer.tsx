@@ -14,29 +14,21 @@ import { supabase } from "@/lib/supabaseClient";
 
 export default function Footer() {
     const pathname = usePathname();
-    // const today = new Date().toISOString().split("T")[0]; // 今日の日付を取得
-    const today = new Date("2025-01-01").toISOString().split("T")[0];
+    const today = new Date().toISOString().split("T")[0]; // 今日の日付を取得
     const [data, setData] = useState(null);
     const [open, setOpen] = useState(false);
     const [openNoneSchedule, setOpenNoneSchedule] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const scheduleRes = await supabase
-                    .from("Schedule")
-                    .select("*")
-                    .eq("date", today)
-                    .eq("state", "unfinished");
+            const scheduleRes = await supabase
+                .from("Schedule")
+                .select("*")
+                .eq("date", today)
+                .eq("state", "unfinished")
+                .single();
 
-                if (scheduleRes.error) {
-                    console.error("Error fetching schedule:", scheduleRes.error);
-                } else {
-                    setData(scheduleRes.data.length > 0 ? scheduleRes.data[0] : null);
-                }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
+            setData(scheduleRes ? scheduleRes.data : null);
         };
 
         fetchData();
