@@ -4,27 +4,34 @@
     margin: auto;
     margin-top: 20px;
 }
+.studyWrap {
+    margin: 0 20px;
 
-.TimerWrap {
-    text-align: center;
-    font-size: 2.4rem;
+    margin-top: 20px;
     border-radius: 8px;
-    .StudyState {
+    padding: 20px;
+    box-shadow: 0 1px 2px 0px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    .TimerWrap {
+        text-align: center;
         font-size: 2.4rem;
-        // margin-top: 20px;
-        font-weight: bold;
-    }
-    h1 {
-        font-size: 4rem;
-    }
-    p {
-        font-size: 1.6rem;
-    }
-    .PauseBtn {
-        margin-top: 10px;
-        padding: 10px 20px;
-        font-size: 1.6rem;
         border-radius: 8px;
-        background-color: #f5f5f5;
+        .StudyState {
+            font-size: 2.4rem;
+            font-weight: bold;
+        }
+        h1 {
+            font-size: 4rem;
+        }
+        p {
+            font-size: 1.6rem;
+        }
+        .PauseBtn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 1.6rem;
+            border-radius: 8px;
+            background-color: #f5f5f5;
+        }
     }
 }
