@@ -6,6 +6,7 @@ import { supabase } from "@lib/supabaseClient";
 import { ToggleButtonGroup, ToggleButton } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Button from "@mui/material/Button";
+import Loading from "@/components/Loading";
 
 interface Schedule {
     id: number;
@@ -110,7 +111,7 @@ export default function SummaryField() {
                     </div>
                 </div>
             ) : (
-                <p>loading...</p>
+                <Loading />
             )}
         </div>
     );

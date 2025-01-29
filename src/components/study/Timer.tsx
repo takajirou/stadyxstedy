@@ -9,6 +9,7 @@ import { Button, Typography } from "@mui/material";
 import EndButton from "@/components/study/EndButton";
 import CheckSchedule from "@/components/study/CheckSchedule";
 import { supabase } from "@/lib/supabaseClient";
+import Loading from "@/components/Loading";
 
 export default function Timer() {
     // const today = new Date().toISOString().split("T")[0]; // 今日の日付を取得
@@ -106,7 +107,7 @@ export default function Timer() {
     }
 
     if (totalStudyHours === null || breakMinutes === null || breakCount === null) {
-        return <div>データを読み込んでいます...</div>;
+        return <Loading />;
     }
 
     return (

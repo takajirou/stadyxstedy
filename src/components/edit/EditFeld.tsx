@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Link from "next/link";
 import { supabase } from "@lib/supabaseClient";
+import { useRouter } from "next/navigation";
 
 interface Objectives {
     id: number;
@@ -13,6 +14,7 @@ interface Objectives {
     Size: string;
 }
 export default function EditFeld() {
+    const router = useRouter();
     const [grandObjective, setGrandObjective] = useState<Objectives[]>([]);
     const [weekObjective, setWeekObjective] = useState<Objectives[]>([]);
     const [grandObjectiveValue, setGrandObjectiveValue] = useState<string | undefined>(undefined);
@@ -95,6 +97,7 @@ export default function EditFeld() {
             }
             updateWeekObjective();
             updateGrandObjective();
+            router.push("/home");
         } else if (grandObjectiveValue) {
             async function updateGrandObjective() {
                 const { error } = await supabase
@@ -107,6 +110,7 @@ export default function EditFeld() {
                 }
             }
             updateGrandObjective();
+            router.push("/home");
         } else if (weekObjectiveValue) {
             async function updateWeekObjective() {
                 const { error } = await supabase
@@ -120,6 +124,7 @@ export default function EditFeld() {
                 }
             }
             updateWeekObjective();
+            router.push("/home");
         } else {
             console.log("何も入力されていません。");
         }
@@ -177,11 +182,9 @@ export default function EditFeld() {
                 <Link href="/home">
                     <Button variant="outlined">戻る</Button>
                 </Link>
-                <Link href="/home">
-                    <Button variant="contained" onClick={UpdateObjective}>
-                        編集を終わる
-                    </Button>
-                </Link>
+                <Button variant="contained" onClick={UpdateObjective}>
+                    編集を終わる
+                </Button>
             </div>
         </>
     );
