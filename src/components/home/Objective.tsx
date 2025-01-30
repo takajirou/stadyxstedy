@@ -16,8 +16,8 @@ type ObjectiveProps = {
 };
 
 export default function ObjectivesPage({ Objective }: ObjectiveProps) {
-    const [grandObjective, setGrandObjective] = useState<Objectives[]>([]);
-    const [weekObjective, setWeekObjective] = useState<Objectives[]>([]);
+    const [grandObjective, setGrandObjective] = useState<Objectives | null>(null);
+    const [weekObjective, setWeekObjective] = useState<Objectives | null>(null);
 
     useEffect(() => {
         const fetchGrandObjectives = async () => {
@@ -25,7 +25,8 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                 const { data, error } = await supabase
                     .from("Objectives")
                     .select("*")
-                    .eq("Size", "grand");
+                    .eq("Size", "grand")
+                    .single();
 
                 if (error) {
                     console.error("Error fetching grand objectives:", error.message);
@@ -43,7 +44,8 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                 const { data, error } = await supabase
                     .from("Objectives")
                     .select("*")
-                    .eq("Size", "week");
+                    .eq("Size", "week")
+                    .single();
 
                 if (error) {
                     console.error("Error fetching week objectives:", error.message);
@@ -75,7 +77,7 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                     <div
                         className={clsx(
                             styles.ObjectiveWrap,
-                            grandObjective.length === 0 && styles.ObjectiveWrapEmpty
+                            grandObjective?.Objective ? "" : styles.ObjectiveWrapEmpty
                         )}
                     >
                         <div className={styles.ObjectiveHeader}>
@@ -84,14 +86,16 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                                 <LuPencil color="#898989" />
                             </Link>
                         </div>
-                        {grandObjective.length > 0 ? (
-                            grandObjective.map((objective) => (
-                                <div key={objective.id}>
-                                    <p>{objective.Objective}</p>
-                                </div>
-                            ))
+                        {grandObjective?.Objective ? (
+                            <div key={grandObjective.id}>
+                                <p>{grandObjective.Objective}</p>
+                            </div>
                         ) : (
-                            <Button variant="contained" className={styles.ObjectiveEmptyButton}>
+                            <Button
+                                variant="contained"
+                                href="/edit"
+                                className={styles.ObjectiveEmptyButton}
+                            >
                                 新しく目標を設定
                             </Button>
                         )}
@@ -100,7 +104,7 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                     <div
                         className={clsx(
                             styles.ObjectiveWrap,
-                            weekObjective.length === 0 && styles.ObjectiveWrapEmpty
+                            weekObjective?.Objective ? "" : styles.ObjectiveWrapEmpty
                         )}
                     >
                         <div className={styles.ObjectiveHeader}>
@@ -109,14 +113,16 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                                 <LuPencil color="#898989" />
                             </Link>
                         </div>
-                        {weekObjective.length > 0 ? (
-                            weekObjective.map((objective) => (
-                                <div key={objective.id} className={styles.Objective}>
-                                    <p>{objective.Objective}</p>
-                                </div>
-                            ))
+                        {weekObjective?.Objective ? (
+                            <div key={weekObjective.id} className={styles.Objective}>
+                                <p>{weekObjective.Objective}</p>
+                            </div>
                         ) : (
-                            <Button variant="contained" className={styles.ObjectiveEmptyButton}>
+                            <Button
+                                variant="contained"
+                                href="/edit"
+                                className={styles.ObjectiveEmptyButton}
+                            >
                                 新しく目標を設定
                             </Button>
                         )}
