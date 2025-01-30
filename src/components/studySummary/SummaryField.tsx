@@ -7,6 +7,7 @@ import { ToggleButtonGroup, ToggleButton } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Button from "@mui/material/Button";
 import Loading from "@/components/Loading";
+import { TextField } from "@mui/material";
 
 interface Schedule {
     id: number;
@@ -26,7 +27,7 @@ export default function SummaryField() {
     const [achievement, setAchievement] = useState("Achieved");
     const [review, setReview] = useState("振り返りなし");
     useEffect(() => {
-        const today = new Date("2025-01-01");
+        const today = new Date();
         const fetchScheduleData = async () => {
             const { data, error } = await supabase
                 .from("Schedule")
@@ -104,7 +105,33 @@ export default function SummaryField() {
                     </div>
 
                     <h2>学習した内容のまとめ</h2>
-                    <textarea onChange={ReviewChange}></textarea>
+                    <TextField
+                        fullWidth
+                        multiline
+                        onChange={ReviewChange}
+                        variant="outlined"
+                        placeholder="学習した内容のまとめを入力"
+                        helperText="最大50文字"
+                        InputLabelProps={{ shrink: true }}
+                        inputProps={{
+                            maxLength: 50,
+                            style: { fontSize: "1.5rem" },
+                        }}
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+                                backgroundColor: "white",
+                            },
+                            "& .MuiInputBase-input": {
+                                backgroundColor: "white",
+                            },
+                            "& label": {
+                                fontSize: "1.5rem",
+                            },
+                            "& .MuiFormHelperText-root": {
+                                fontSize: "1.2rem",
+                            },
+                        }}
+                    />
                     <div className={styles.ButtonWrap}>
                         <Button
                             variant="outlined"
