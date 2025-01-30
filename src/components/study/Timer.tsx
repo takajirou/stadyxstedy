@@ -10,6 +10,7 @@ import EndButton from "@/components/study/EndButton";
 import CheckSchedule from "@/components/study/CheckSchedule";
 import { supabase } from "@/lib/supabaseClient";
 import Loading from "@/components/Loading";
+import clsx from "clsx";
 
 export default function Timer() {
     const today = new Date().toISOString().split("T")[0];
@@ -22,6 +23,7 @@ export default function Timer() {
     const [currentCycle, setCurrentCycle] = useState<number>(1);
     const [isPaused, setIsPaused] = useState(false);
     const [isBreak, setIsBreak] = useState(false);
+    const [remainingBreakCount, setRemainingBreakCount] = useState<number>(0);
 
     const [totalStudyMinutes, setTotalStudyMinutes] = useState<number>(0);
 
@@ -39,15 +41,16 @@ export default function Timer() {
                 setTotalStudyHours(data.studyTime);
                 setBreakMinutes(data.breakTime);
                 setBreakCount(data.breakCount);
+                setRemainingBreakCount(data.breakCount);
 
                 const totalStudyMinutes = data.studyTime;
                 setTotalStudyMinutes(totalStudyMinutes);
 
                 const totalStudySeconds = totalStudyMinutes * 60;
-                const studyPerCycleSeconds = totalStudySeconds / data.breakCount;
-
-                setTime(studyPerCycleSeconds);
-                setRemainingStudyTime(totalStudySeconds);
+                // 勉強時間を均等に分割し、休憩を挟む
+                const studyTimePerCycle = totalStudySeconds / (data.breakCount! + 1); // 休憩回数 + 1 のサイクルで分ける
+                setTime(studyTimePerCycle); // 各サイクルの勉強時間
+                setRemainingStudyTime(totalStudySeconds); // 残りの学習時間
             } catch (err) {
                 setError(err instanceof Error ? err.message : "データの取得に失敗しました");
             }
@@ -68,18 +71,30 @@ export default function Timer() {
 
             return () => clearInterval(timer);
         } else if (time === 0) {
-            if (!isBreak && currentCycle < breakCount!) {
+            if (!isBreak && currentCycle <= breakCount!) {
                 setIsBreak(true);
                 setTime(breakMinutes! * 60);
             } else if (isBreak) {
                 setIsBreak(false);
-                if (currentCycle < breakCount!) {
-                    setTime(remainingStudyTime / (breakCount! - currentCycle));
+                if (currentCycle - 1 < breakCount!) {
+                    setRemainingBreakCount((prev) => prev - 1);
+                    const studyTimePerCycle = (totalStudyMinutes * 60) / (breakCount! + 1);
+                    setTime(studyTimePerCycle);
                     setCurrentCycle((prev) => prev + 1);
                 }
             }
         }
-    }, [time, isPaused, isBreak, currentCycle, breakCount, remainingStudyTime, breakMinutes]);
+    }, [
+        time,
+        isPaused,
+        isBreak,
+        currentCycle,
+        breakCount,
+        remainingStudyTime,
+        breakMinutes,
+        totalStudyMinutes,
+        remainingBreakCount,
+    ]);
 
     useEffect(() => {
         if (!isPaused && !isBreak) {
@@ -118,13 +133,18 @@ export default function Timer() {
                 <p className={styles.StudyState}>
                     {isBreak ? "休憩中" : remainingStudyTime === 0 ? "勉強終了" : "勉強中"}
                 </p>
-                <Typography variant="h1" className={orbitron.className}>
+                <Typography
+                    variant="h1"
+                    className={clsx(orbitron.className, isBreak && styles.Break)}
+                >
                     {formatTime(remainingStudyTime)}
                 </Typography>
                 <p>
                     {isBreak
                         ? `休憩時間残り： ${formatTime(time)}`
-                        : `休憩まで： ${formatTime(time)}`}
+                        : remainingBreakCount === 0
+                        ? "次の休憩：なし"
+                        : `次の休憩まで： ${formatTime(time)}`}
                 </p>
                 <Button onClick={togglePause} className={styles.PauseBtn}>
                     {isPaused ? (
