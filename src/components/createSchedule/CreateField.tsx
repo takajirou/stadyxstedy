@@ -69,6 +69,7 @@ export default function CreateField({ date }: dateProps) {
                         defaultValue={0}
                         sx={{
                             fontSize: "1.5rem",
+                            backgroundColor: "white",
                             "& .MuiSelect-select": {
                                 padding: "10px",
                             },
@@ -87,6 +88,7 @@ export default function CreateField({ date }: dateProps) {
                         defaultValue={0}
                         sx={{
                             fontSize: "1.5rem",
+                            backgroundColor: "white",
                             "& .MuiSelect-select": {
                                 padding: "10px",
                             },
@@ -109,6 +111,7 @@ export default function CreateField({ date }: dateProps) {
                         defaultValue={0}
                         sx={{
                             fontSize: "1.5rem",
+                            backgroundColor: "white",
                             "& .MuiSelect-select": {
                                 padding: "10px",
                             },
@@ -126,6 +129,7 @@ export default function CreateField({ date }: dateProps) {
                         defaultValue={0}
                         sx={{
                             fontSize: "1.5rem",
+                            backgroundColor: "white",
                             "& .MuiSelect-select": {
                                 padding: "10px",
                             },
@@ -156,6 +160,7 @@ export default function CreateField({ date }: dateProps) {
                     sx={{
                         "& .MuiInputBase-input": {
                             padding: "10px",
+                            backgroundColor: "white",
                         },
                         "& label": {
                             fontSize: "1.5rem",
@@ -181,6 +186,12 @@ export default function CreateField({ date }: dateProps) {
                         style: { fontSize: "1.5rem" },
                     }}
                     sx={{
+                        "& .MuiOutlinedInput-root": {
+                            backgroundColor: "white",
+                        },
+                        "& .MuiInputBase-input": {
+                            backgroundColor: "white",
+                        },
                         "& label": {
                             fontSize: "1.5rem",
                         },
