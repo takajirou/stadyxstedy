@@ -12,12 +12,24 @@ import { Dialog, DialogActions, Button, DialogTitle } from "@mui/material";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
+interface Schedule {
+    id: number;
+    object: string;
+    studyTime: number;
+    breakTime: number;
+    breakCount: number;
+    studyContent: string;
+    date: string;
+    state: string;
+}
+
 export default function Footer() {
     const pathname = usePathname();
-    const today = new Date().toISOString().split("T")[0]; // 今日の日付を取得
-    const [data, setData] = useState(null);
+    const today = new Date().toISOString().split("T")[0];
+    const [data, setData] = useState<Schedule>();
     const [open, setOpen] = useState(false);
     const [openNoneSchedule, setOpenNoneSchedule] = useState(false);
+    const [openAlreadySchedule, setOpenAlreadySchedule] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -25,7 +37,6 @@ export default function Footer() {
                 .from("Schedule")
                 .select("*")
                 .eq("date", today)
-                .eq("state", "unfinished")
                 .single();
 
             setData(scheduleRes ? scheduleRes.data : null);
@@ -48,6 +59,14 @@ export default function Footer() {
 
     const handleCloseNoneSchedule = () => {
         setOpenNoneSchedule(false);
+    };
+
+    const handleOpenAlreadySchedule = () => {
+        setOpenAlreadySchedule(true);
+    };
+
+    const handleCloseAlreadySchedule = () => {
+        setOpenAlreadySchedule(false);
     };
 
     return (
@@ -77,6 +96,13 @@ export default function Footer() {
                 </DialogActions>
             </Dialog>
 
+            <Dialog open={openAlreadySchedule} onClose={handleCloseAlreadySchedule}>
+                <DialogTitle>今日の勉強は終了しています。</DialogTitle>
+                <DialogActions>
+                    <Button onClick={handleCloseAlreadySchedule}>閉じる</Button>
+                </DialogActions>
+            </Dialog>
+
             <footer className={styles.FooterWrap}>
                 <Link href="/home" className={clsx(styles.NavBtn, styles.HomeBtn)}>
                     <GoHome color="white" size="24px" />
@@ -88,7 +114,13 @@ export default function Footer() {
                 </Link>
                 <Button
                     className={clsx(styles.StartBtn)}
-                    onClick={data ? handleClickOpen : handleOpenNoneSchedule}
+                    onClick={
+                        data
+                            ? data.state === "finished"
+                                ? handleOpenAlreadySchedule
+                                : handleClickOpen
+                            : handleOpenNoneSchedule
+                    }
                 >
                     <IoBookOutline color="#1976d2" size="30px" />
                     <p>{pathname === "/study" ? "勉強中" : "勉強開始"}</p>
