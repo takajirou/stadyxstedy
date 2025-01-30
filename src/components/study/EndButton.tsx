@@ -14,7 +14,7 @@ export default function EndButton({
     totalStudyMinutes: number;
 }) {
     const router = useRouter();
-    const today = new Date("2025-01-01");
+    const today = new Date();
     const [open, setOpen] = useState(false);
 
     const TotalTimeUpdate = async () => {
