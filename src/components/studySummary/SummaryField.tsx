@@ -52,7 +52,7 @@ export default function SummaryField() {
         setReview(e.target.value);
     };
 
-    const UpdateScheduleData = async () => {
+    const UpdateScheduleData = async (value: string) => {
         const { error } = await supabase
             .from("Schedule")
             .update({ Achivement: achievement, studyReview: review })
@@ -61,7 +61,11 @@ export default function SummaryField() {
         if (error) {
             console.error("Error fetching schedule data:", error);
         }
-        router.push("/home");
+        if (value === "home") {
+            router.push("/home");
+        } else if (value === "tommorow") {
+            router.push("/createSchedule");
+        }
     };
 
     return (
@@ -102,10 +106,18 @@ export default function SummaryField() {
                     <h2>学習した内容のまとめ</h2>
                     <textarea onChange={ReviewChange}></textarea>
                     <div className={styles.ButtonWrap}>
-                        <Button variant="outlined" value="home" onClick={UpdateScheduleData}>
+                        <Button
+                            variant="outlined"
+                            value="home"
+                            onClick={() => UpdateScheduleData("home")}
+                        >
                             ホームに戻る
                         </Button>
-                        <Button variant="contained" value="tommorow" onClick={UpdateScheduleData}>
+                        <Button
+                            variant="contained"
+                            value="tommorow"
+                            onClick={() => UpdateScheduleData("tommorow")}
+                        >
                             明日のスケジュールを作成する
                         </Button>
                     </div>
