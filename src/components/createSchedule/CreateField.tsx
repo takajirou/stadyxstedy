@@ -14,11 +14,12 @@ const array = [0, 10, 20, 30, 40, 50];
 const breakArray = [0, 5, 10, 15, 20, 25, 30];
 const breakCountArray = [0, 1, 2, 3, 4, 5];
 
-interface dateProps {
+interface Props {
     date: string;
+    selectDate: (date?: string) => void;
 }
 
-export default function CreateField({ date }: dateProps) {
+export default function CreateField({ date, selectDate }: Props) {
     const router = useRouter();
     const [objective, setObjective] = useState("");
     const [studyContent, setStudyContent] = useState("");
@@ -231,8 +232,12 @@ export default function CreateField({ date }: dateProps) {
                 </div>
 
                 <div className={styles.BtnWrap}>
-                    <Button variant="outlined" sx={{ fontSize: "1.4rem" }} href="/home">
-                        ホームに戻る
+                    <Button
+                        variant="outlined"
+                        sx={{ fontSize: "1.4rem" }}
+                        onClick={() => selectDate()}
+                    >
+                        戻る
                     </Button>
                     <Button variant="contained" sx={{ fontSize: "1.4rem" }} onClick={CheckFields}>
                         スケジュールを登録する

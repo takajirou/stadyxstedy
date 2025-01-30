@@ -12,6 +12,10 @@ export default function Page() {
     const handleScheduleCreation = (date: string) => {
         setSelectedDate(date);
     };
+
+    const deleteSelectDate = () => {
+        setSelectedDate(null);
+    };
     return (
         <>
             <Header />
@@ -24,7 +28,7 @@ export default function Page() {
                             ? "今日の勉強スケジュール作成"
                             : "明日の勉強スケジュール作成"}
                     </h1>
-                    <CreateField date={selectedDate} />
+                    <CreateField date={selectedDate} selectDate={deleteSelectDate} />
                 </div>
             )}
         </>
