@@ -20,7 +20,8 @@ export default function EndButton({
     const TotalTimeUpdate = async () => {
         const { error } = await supabase
             .from("Schedule")
-            .update({ studyMinutes: totalStudyMinutes })
+            .update({ studyMinutes: totalStudyMinutes, state: "finished" })
+
             .eq("date", today.toISOString().split("T")[0]);
 
         if (error) {
