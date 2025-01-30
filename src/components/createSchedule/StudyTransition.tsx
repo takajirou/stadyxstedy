@@ -4,6 +4,7 @@ import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { supabase } from "@lib/supabaseClient";
 import { Dialog, DialogActions, DialogTitle } from "@mui/material";
+import Loading from "@/components/Loading";
 import styles from "@styles/componentStyles/createSchedule/StudyTransition.module.scss";
 
 interface Schedule {
@@ -27,6 +28,7 @@ export default function StudyTransition({ onScheduleCreate }: StudyTransitionPro
     const [tomorrowSchedule, setTomorrowSchedule] = useState<Schedule | null>(null);
     const [todayOpen, setTodayOpen] = useState(false);
     const [tomorrowOpen, setTomorrowOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -47,6 +49,8 @@ export default function StudyTransition({ onScheduleCreate }: StudyTransitionPro
             setTodaySchedule(todayData);
             setTomorrowSchedule(tomorrowData);
         };
+
+        setLoading(false);
         fetchData();
     }, [today]);
 
@@ -76,50 +80,56 @@ export default function StudyTransition({ onScheduleCreate }: StudyTransitionPro
 
     return (
         <>
-            <Dialog open={todayOpen} onClose={todayHandleClose}>
-                <DialogTitle>今日のスケジュールは既に設定されています</DialogTitle>
-                <DialogActions>
-                    <Button onClick={todayHandleClose}>閉じる</Button>
-                </DialogActions>
-            </Dialog>
-            <Dialog open={tomorrowOpen} onClose={tomorrowHandleClose}>
-                <DialogTitle>明日のスケジュールは既に設定されています</DialogTitle>
-                <DialogActions>
-                    <Button onClick={tomorrowHandleClose}>閉じる</Button>
-                </DialogActions>
-            </Dialog>
-            <div className={styles.PageWrap}>
-                <div className={styles.ButtonWrap}>
-                    <Button
-                        value="today"
-                        onClick={() => todayHandleClick("today")}
-                        sx={{
-                            border: "1px solid #000",
-                            borderRadius: "10px",
-                            margin: "50px",
-                            padding: "10px 20px",
-                            fontSize: "1.5rem",
-                            backgroundColor: "#fff",
-                        }}
-                    >
-                        今日のスケジュールを作成する
-                    </Button>
-                    <Button
-                        value="tomorrow"
-                        onClick={() => tomorrowHandleClick("tomorrow")}
-                        sx={{
-                            border: "1px solid #000",
-                            borderRadius: "10px",
-                            margin: "50px",
-                            padding: "10px 20px",
-                            fontSize: "1.5rem",
-                            backgroundColor: "#fff",
-                        }}
-                    >
-                        明日のスケジュールを作成する
-                    </Button>
-                </div>
-            </div>
+            {!loading ? (
+                <>
+                    <Dialog open={todayOpen} onClose={todayHandleClose}>
+                        <DialogTitle>今日のスケジュールは既に設定されています</DialogTitle>
+                        <DialogActions>
+                            <Button onClick={todayHandleClose}>閉じる</Button>
+                        </DialogActions>
+                    </Dialog>
+                    <Dialog open={tomorrowOpen} onClose={tomorrowHandleClose}>
+                        <DialogTitle>明日のスケジュールは既に設定されています</DialogTitle>
+                        <DialogActions>
+                            <Button onClick={tomorrowHandleClose}>閉じる</Button>
+                        </DialogActions>
+                    </Dialog>
+                    <div className={styles.PageWrap}>
+                        <div className={styles.ButtonWrap}>
+                            <Button
+                                value="today"
+                                onClick={() => todayHandleClick("today")}
+                                sx={{
+                                    border: "1px solid #000",
+                                    borderRadius: "10px",
+                                    margin: "50px",
+                                    padding: "10px 20px",
+                                    fontSize: "1.5rem",
+                                    backgroundColor: "#fff",
+                                }}
+                            >
+                                今日のスケジュールを作成する
+                            </Button>
+                            <Button
+                                value="tomorrow"
+                                onClick={() => tomorrowHandleClick("tomorrow")}
+                                sx={{
+                                    border: "1px solid #000",
+                                    borderRadius: "10px",
+                                    margin: "50px",
+                                    padding: "10px 20px",
+                                    fontSize: "1.5rem",
+                                    backgroundColor: "#fff",
+                                }}
+                            >
+                                明日のスケジュールを作成する
+                            </Button>
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <Loading />
+            )}
         </>
     );
 }
