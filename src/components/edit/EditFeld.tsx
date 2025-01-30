@@ -138,11 +138,11 @@ export default function EditFeld() {
                         fullWidth
                         label="大目標"
                         placeholder={grandObjective.length > 0 ? grandObjective[0].Objective : ""}
-                        helperText="最大50文字"
+                        helperText="最大20文字"
                         onChange={(e) => setGrandObjectiveValue(e.target.value)}
                         InputLabelProps={{ shrink: true }}
                         inputProps={{
-                            maxLength: 50,
+                            maxLength: 20,
                             style: { fontSize: "1.5rem" },
                         }}
                         sx={{
@@ -160,11 +160,11 @@ export default function EditFeld() {
                         fullWidth
                         label="週目標"
                         placeholder={weekObjective.length > 0 ? weekObjective[0].Objective : ""}
-                        helperText="最大50文字"
+                        helperText="最大20文字"
                         onChange={(e) => setWeekObjectiveValue(e.target.value)}
                         InputLabelProps={{ shrink: true }}
                         inputProps={{
-                            maxLength: 50,
+                            maxLength: 20,
                             style: { fontSize: "1.5rem" },
                         }}
                         sx={{
