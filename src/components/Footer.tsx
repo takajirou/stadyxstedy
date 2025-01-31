@@ -32,18 +32,14 @@ export default function Footer() {
     const [openAlreadySchedule, setOpenAlreadySchedule] = useState(false);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const scheduleRes = await supabase
-                .from("Schedule")
-                .select("*")
-                .eq("date", today)
-                .single();
-
-            setData(scheduleRes ? scheduleRes.data : null);
-        };
-
         fetchData();
-    }, [today]);
+    });
+
+    const fetchData = async () => {
+        const scheduleRes = await supabase.from("Schedule").select("*").eq("date", today).single();
+
+        setData(scheduleRes ? scheduleRes.data : null);
+    };
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -67,6 +63,19 @@ export default function Footer() {
 
     const handleCloseAlreadySchedule = () => {
         setOpenAlreadySchedule(false);
+    };
+
+    const handleStartStudy = async () => {
+        await fetchData();
+        if (data) {
+            if (data.state === "finished") {
+                handleOpenAlreadySchedule();
+            } else {
+                handleClickOpen();
+            }
+        } else {
+            handleOpenNoneSchedule();
+        }
     };
 
     return (
@@ -112,16 +121,7 @@ export default function Footer() {
                     <PiPlusSquare color="white" size="24px" />
                     <p>作成</p>
                 </Link>
-                <Button
-                    className={clsx(styles.StartBtn)}
-                    onClick={
-                        data
-                            ? data.state === "finished"
-                                ? handleOpenAlreadySchedule
-                                : handleClickOpen
-                            : handleOpenNoneSchedule
-                    }
-                >
+                <Button className={clsx(styles.StartBtn)} onClick={handleStartStudy}>
                     <IoBookOutline color="#1976d2" size="30px" />
                     <p>{pathname === "/study" ? "勉強中" : "勉強開始"}</p>
                 </Button>
