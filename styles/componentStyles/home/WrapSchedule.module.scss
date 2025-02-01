@@ -33,7 +33,7 @@
     }
     .Arrow {
         position: absolute;
-
+        z-index: 100;
         top: 50%;
         transform: translate(-50%, -50%);
         font-size: 2rem;
