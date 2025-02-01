@@ -3,6 +3,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    position: relative;
 
     .ScheduleHeader {
         display: flex;
@@ -15,16 +16,6 @@
             font-size: 1.5rem;
             margin: 0 10px;
         }
-
-        button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #fff;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-        }
     }
 
     .ScheduleContainer {
@@ -34,23 +25,38 @@
         width: 100%;
         padding: 0 5vw;
         white-space: nowrap;
+        scrollbar-width: thin;
+        scrollbar-color: #888 #ddd;
+        -webkit-overflow-scrolling: touch;
+        touch-action: manipulation;
+        position: relative;
+    }
+    .Arrow {
+        position: absolute;
+
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 2rem;
+        color: rgba(0, 0, 0, 0.5);
+        animation: moveArrow 1.5s infinite alternate ease-in-out;
     }
 
-    .ScheduleContainer::-webkit-scrollbar {
-        width: 12px; /* 横スクロールバーの幅 */
-        height: 12px; /* 縦スクロールバーの高さ（必要に応じて） */
+    .Forward {
+        right: 5px;
+    }
+    .Back {
+        right: 25px;
     }
 
-    .ScheduleContainer::-webkit-scrollbar-thumb {
-        background-color: #888; /* スクロールバーの色 */
-        border-radius: 6px; /* 角丸にする */
-    }
-
-    .ScheduleContainer::-webkit-scrollbar-track {
-        background: #ddd; /* スクロールバーの背景色 */
-    }
-    .Schedules {
-        scroll-snap-align: center;
-        flex-shrink: 0;
+    @keyframes moveArrow {
+        0% {
+            transform: translateY(-50%) translateX(0);
+        }
+        50% {
+            transform: translateY(-50%) translateX(10px);
+        }
+        100% {
+            transform: translateY(-50%) translateX(0);
+        }
     }
 }

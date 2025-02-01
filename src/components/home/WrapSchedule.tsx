@@ -2,7 +2,7 @@
 
 import styles from "@styles/componentStyles/home/WrapSchedule.module.scss";
 import Schedules from "@/components/home/Schedules";
-
+import { MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos } from "react-icons/md";
 import clsx from "clsx";
 import { useRef, useState, useEffect } from "react";
 
@@ -63,6 +63,12 @@ export default function Schedule() {
             </div>
 
             <div className={styles.ScheduleContainer} ref={containerRef}>
+                {currentSchedule === "today" && (
+                    <MdOutlineArrowForwardIos className={clsx(styles.Arrow, styles.Forward)} />
+                )}
+                {currentSchedule === "tomorrow" && (
+                    <MdOutlineArrowBackIosNew className={clsx(styles.Arrow, styles.Back)} />
+                )}
                 <div
                     className={clsx(styles.TodaySchedule, styles.Schedules)}
                     ref={todayRef}
