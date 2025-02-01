@@ -31,6 +31,11 @@
         touch-action: manipulation;
         position: relative;
     }
+
+    .Schedules {
+        flex-shrink: 0;
+        scroll-snap-align: center;
+    }
     .Arrow {
         position: absolute;
         z-index: 100;
