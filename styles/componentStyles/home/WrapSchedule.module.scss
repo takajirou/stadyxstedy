@@ -1,0 +1,41 @@
+.ScheduleWrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .ScheduleHeader {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+
+        h2 {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            margin: 0 10px;
+        }
+
+        button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+    }
+
+    .ScheduleContainer {
+        display: flex;
+        overflow-x: auto;
+        white-space: nowrap;
+        width: 100%;
+
+        .Schedules {
+            width: 306px;
+            flex-shrink: 0;
+        }
+    }
+}
