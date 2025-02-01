@@ -35,6 +35,20 @@
         padding: 0 5vw;
         white-space: nowrap;
     }
+
+    .ScheduleContainer::-webkit-scrollbar {
+        width: 12px; /* 横スクロールバーの幅 */
+        height: 12px; /* 縦スクロールバーの高さ（必要に応じて） */
+    }
+
+    .ScheduleContainer::-webkit-scrollbar-thumb {
+        background-color: #888; /* スクロールバーの色 */
+        border-radius: 6px; /* 角丸にする */
+    }
+
+    .ScheduleContainer::-webkit-scrollbar-track {
+        background: #ddd; /* スクロールバーの背景色 */
+    }
     .Schedules {
         scroll-snap-align: center;
         flex-shrink: 0;
