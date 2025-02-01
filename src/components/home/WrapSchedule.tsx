@@ -35,9 +35,10 @@ export default function Schedule() {
 
             setTomorrowScale(Math.max(0.8, 1 - tomorrowDistance / containerRect.width));
 
-            if (container.scrollLeft !== 0) {
+            const scrollThreshold = containerRect.width / 2;
+            if (container.scrollLeft > scrollThreshold) {
                 setCurrentSchedule("tomorrow");
-            } else{
+            } else {
                 setCurrentSchedule("today");
             }
         };

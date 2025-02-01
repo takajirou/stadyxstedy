@@ -28,37 +28,15 @@
     }
 
     .ScheduleContainer {
-        display: grid;
-        grid-template-columns: 1fr auto 1fr;
-        overflow-x: auto;
-        white-space: nowrap;
-        width: 100%;
-        padding-left: 3vw;
-        padding-right: 10vw;
+        display: flex;
+        overflow-x: scroll;
         scroll-snap-type: x mandatory;
-        place-items: center;
-        .Schedules {
-            width: 306px;
-            flex-shrink: 0;
-            scroll-snap-align: center;
-            justify-self: center;
-        }
+        width: 100%;
+        padding: 0 5vw;
+        white-space: nowrap;
     }
-}
-
-.ScheduleContainer {
-    overflow-x: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #3498db #e0e0e0; /* スクロールバーの色を変更 */
-}
-
-/* Webkitベースのブラウザ（Chrome, Safariなど）に対応 */
-.ScheduleContainer::-webkit-scrollbar {
-    width: 8px;
-}
-.ScheduleContainer::-webkit-scrollbar-thumb {
-    background-color: #3498db;
-}
-.ScheduleContainer::-webkit-scrollbar-track {
-    background-color: #e0e0e0;
+    .Schedules {
+        scroll-snap-align: center;
+        flex-shrink: 0;
+    }
 }
