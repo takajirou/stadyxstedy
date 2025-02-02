@@ -11,6 +11,7 @@ import CheckSchedule from "@/components/study/CheckSchedule";
 import { supabase } from "@/lib/supabaseClient";
 import Loading from "@/components/Loading";
 import clsx from "clsx";
+import { useRef } from "react";
 
 export default function Timer() {
     const today = new Date().toISOString().split("T")[0];
@@ -24,8 +25,8 @@ export default function Timer() {
     const [isPaused, setIsPaused] = useState(false);
     const [isBreak, setIsBreak] = useState(false);
     const [remainingBreakCount, setRemainingBreakCount] = useState<number>(0);
-
     const [totalStudyMinutes, setTotalStudyMinutes] = useState<number>(0);
+    const studyStartTime = useRef<number | null>(null);
 
     useEffect(() => {
         const fetchScheduleData = async () => {
@@ -47,10 +48,9 @@ export default function Timer() {
                 setTotalStudyMinutes(totalStudyMinutes);
 
                 const totalStudySeconds = totalStudyMinutes * 60;
-                // 勉強時間を均等に分割し、休憩を挟む
-                const studyTimePerCycle = totalStudySeconds / (data.breakCount! + 1); // 休憩回数 + 1 のサイクルで分ける
-                setTime(studyTimePerCycle); // 各サイクルの勉強時間
-                setRemainingStudyTime(totalStudySeconds); // 残りの学習時間
+                const studyTimePerCycle = totalStudySeconds / (data.breakCount! + 1);
+                setTime(studyTimePerCycle);
+                setRemainingStudyTime(totalStudySeconds);
             } catch (err) {
                 setError(err instanceof Error ? err.message : "データの取得に失敗しました");
             }
@@ -98,11 +98,22 @@ export default function Timer() {
 
     useEffect(() => {
         if (!isPaused && !isBreak) {
+            if (studyStartTime.current === null) {
+                studyStartTime.current = Date.now();
+            }
+
             const interval = setInterval(() => {
-                setTotalStudyMinutes((prevMinutes) => prevMinutes + 1);
-            }, 60000);
+                if (studyStartTime.current !== null) {
+                    const elapsedMinutes = Math.floor(
+                        (Date.now() - studyStartTime.current) / 60000
+                    );
+                    setTotalStudyMinutes(elapsedMinutes);
+                }
+            }, 1000);
 
             return () => clearInterval(interval);
+        } else if (isPaused || isBreak) {
+            studyStartTime.current = null;
         }
     }, [isPaused, isBreak]);
 
