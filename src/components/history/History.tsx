@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase } from "@lib/supabaseClient";
+import styles from "@styles/componentStyles/history/History.module.scss";
 
 interface Schedule {
     id: number;
@@ -9,6 +10,8 @@ interface Schedule {
     breakTime: number;
     breakCount: number;
     studyContent: string;
+    studyMinutes: number;
+    Achievement: string;
     date: string;
     state: string;
 }
@@ -19,6 +22,7 @@ interface HistoryProps {
 
 export default function HistoryPage({ id }: HistoryProps) {
     const [history, setHistory] = useState<Schedule | null>(null);
+    const [weekday, setWeekday] = useState<string | null>(null);
     useEffect(() => {
         const fetchHistory = async () => {
             const { data, error } = await supabase
@@ -37,10 +41,47 @@ export default function HistoryPage({ id }: HistoryProps) {
         fetchHistory();
     });
 
+    function getWeekday(dateString?: string) {
+        if (!dateString) return;
+        const days = ["日", "月", "火", "水", "木", "金", "土"];
+        const date = new Date(dateString);
+        setWeekday(days[date.getDay()]);
+    }
+    useEffect(() => {
+        getWeekday(history?.date);
+    }, [history]);
+
     return (
         <main>
-            <h1>history</h1>
-            <div>{history?.studyContent}</div>
+            {history ? (
+                <>
+                    <div className={styles.Content}>
+                        <h2>
+                            {history.date}({weekday})
+                        </h2>
+                        <p>
+                            <span>目標:</span>
+                            {history.object}
+                        </p>
+                        <p>
+                            <span>学習時間:</span>
+                            {history.studyMinutes < 60
+                                ? `${history.studyMinutes}分`
+                                : `${Math.floor(history.studyMinutes / 60)}時間 ${
+                                      history.studyMinutes % 60 === 0
+                                          ? ""
+                                          : ` ${history.studyMinutes % 60}分`
+                                  }`}
+                        </p>
+                        <p>
+                            <span>目標:</span>
+                            {history.Achievement === "Achieved" ? "達成" : "未達成"}
+                        </p>
+                    </div>
+                </>
+            ) : (
+                ""
+            )}
         </main>
     );
 }
