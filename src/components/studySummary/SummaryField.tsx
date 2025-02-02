@@ -56,7 +56,7 @@ export default function SummaryField() {
     const UpdateScheduleData = async (value: string) => {
         const { error } = await supabase
             .from("Schedule")
-            .update({ Achivement: achievement, studyReview: review })
+            .update({ Achievement: achievement, studyReview: review })
             .eq("id", scheduleData?.id)
             .single();
         if (error) {
