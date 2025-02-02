@@ -99,8 +99,22 @@ export default function SummaryField() {
                             onChange={handleChange}
                             exclusive
                         >
-                            <ToggleButton value="Achieved">達成できた</ToggleButton>
-                            <ToggleButton value="NoAchieved">達成できなかった</ToggleButton>
+                            <ToggleButton
+                                value="Achieved"
+                                sx={{
+                                    backgroundColor: "white",
+                                }}
+                            >
+                                達成できた
+                            </ToggleButton>
+                            <ToggleButton
+                                value="NoAchieved"
+                                sx={{
+                                    backgroundColor: "white",
+                                }}
+                            >
+                                達成できなかった
+                            </ToggleButton>
                         </ToggleButtonGroup>
                     </div>
 
