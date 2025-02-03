@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import History from "@/components/history/History";
 import { supabase } from "@lib/supabaseClient";
+import Header from "@/components/Header";
+import styles from "@styles/appStyles/history/Page.module.scss";
 
 interface Schedule {
     id: number;
@@ -34,11 +36,12 @@ export default function HistoryPage() {
 
     return (
         <main>
-            <div>
-                {history.map((schedule) => (
-                    <History key={schedule.id} id={schedule.id} />
-                ))}
-            </div>
+            <Header />
+            {history.map((schedule) => (
+                <div key={schedule.id} className={styles.History}>
+                    <History id={schedule.id} />
+                </div>
+            ))}
         </main>
     );
 }
