@@ -6,6 +6,7 @@ import styles from "@styles/componentStyles/home/Objective.module.scss";
 import Link from "next/link";
 import { Button } from "@mui/material";
 import { supabase } from "@lib/supabaseClient";
+import { GoTrash } from "react-icons/go";
 interface Objectives {
     id: number;
     Objective: string;
@@ -18,44 +19,27 @@ type ObjectiveProps = {
 export default function ObjectivesPage({ Objective }: ObjectiveProps) {
     const [grandObjective, setGrandObjective] = useState<Objectives | null>(null);
     const [weekObjective, setWeekObjective] = useState<Objectives | null>(null);
+    const [fetching, setFetching] = useState(true);
 
     useEffect(() => {
         const fetchGrandObjectives = async () => {
-            try {
-                const { data, error } = await supabase
-                    .from("Objectives")
-                    .select("*")
-                    .eq("Size", "grand")
-                    .single();
+            const { data } = await supabase
+                .from("Objectives")
+                .select("*")
+                .eq("Size", "grand")
+                .single();
 
-                if (error) {
-                    console.error("Error fetching grand objectives:", error.message);
-                    return null;
-                }
-                return data;
-            } catch (err) {
-                console.error("Unexpected error fetching grand objectives:", err);
-                return null;
-            }
+            return data;
         };
 
         const fetchWeekObjectives = async () => {
-            try {
-                const { data, error } = await supabase
-                    .from("Objectives")
-                    .select("*")
-                    .eq("Size", "week")
-                    .single();
+            const { data } = await supabase
+                .from("Objectives")
+                .select("*")
+                .eq("Size", "week")
+                .single();
 
-                if (error) {
-                    console.error("Error fetching week objectives:", error.message);
-                    return null;
-                }
-                return data;
-            } catch (err) {
-                console.error("Unexpected error fetching week objectives:", err);
-                return null;
-            }
+            return data;
         };
 
         const fetchObjectives = async () => {
@@ -69,7 +53,18 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
         };
 
         fetchObjectives();
-    }, []);
+        setFetching(false);
+    }, [fetching]);
+
+    const deleteObjective = async (size: string) => {
+        const { error } = await supabase.from("Objectives").update({ Size: "" }).eq("Size", size);
+        if (error) {
+            console.log("目標なし");
+        }
+
+        setFetching(true);
+    };
+
     return (
         <main>
             <>
@@ -82,9 +77,14 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                     >
                         <div className={styles.ObjectiveHeader}>
                             <h2>大目標</h2>
-                            <Link href="/edit" className={styles.ObjectiveButton}>
-                                <LuPencil color="#898989" />
-                            </Link>
+                            <div className={styles.icons}>
+                                <button onClick={() => deleteObjective("grand")}>
+                                    <GoTrash size="16px" color="#e75f5f" />
+                                </button>
+                                <Link href="/edit" className={styles.ObjectiveButton}>
+                                    <LuPencil color="#898989" />
+                                </Link>
+                            </div>
                         </div>
                         {grandObjective?.Objective ? (
                             <div key={grandObjective.id}>
@@ -109,9 +109,14 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
                     >
                         <div className={styles.ObjectiveHeader}>
                             <h2>週目標</h2>
-                            <Link href="/edit" className={styles.ObjectiveButton}>
-                                <LuPencil color="#898989" />
-                            </Link>
+                            <div className={styles.icons}>
+                                <button onClick={() => deleteObjective("week")}>
+                                    <GoTrash size="16px" color="#e75f5f" />
+                                </button>
+                                <Link href="/edit" className={styles.ObjectiveButton}>
+                                    <LuPencil color="#898989" />
+                                </Link>
+                            </div>
                         </div>
                         {weekObjective?.Objective ? (
                             <div key={weekObjective.id} className={styles.Objective}>
