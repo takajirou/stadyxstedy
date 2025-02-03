@@ -29,6 +29,9 @@ export default function CreateField({ date, selectDate }: Props) {
     const [breakTime, setBreakTime] = useState(0);
     const [breakCount, setBreakCount] = useState(0);
     const [open, setOpen] = useState(false);
+    const [input, setInput] = useState("");
+    const [response, setResponse] = useState("");
+    const [objectiveOpen, setObjectiveOpen] = useState(false);
     let CreateDate;
 
     if (date === "today") {
@@ -60,7 +63,18 @@ export default function CreateField({ date, selectDate }: Props) {
             console.error("Error inserting data:", error);
         }
 
-        router.push("/home");
+        // router.push("/home");
+    };
+
+    const handleSubmit = async () => {
+        const res = await fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: input }),
+        });
+        const data = await res.json();
+        console.log(data.result);
+        setResponse(data.result);
     };
 
     const CheckFields = () => {
@@ -72,6 +86,8 @@ export default function CreateField({ date, selectDate }: Props) {
             breakCount === 0
         ) {
             setOpen(true);
+        } else if (response === "いいえ") {
+            setObjectiveOpen(true);
         } else {
             CreateSchedule();
         }
@@ -81,8 +97,24 @@ export default function CreateField({ date, selectDate }: Props) {
         setOpen(false);
     };
 
+    const HandleObjectiveClose = () => {
+        setObjectiveOpen(false);
+    };
+
+    const HandleEvent = () => {
+        setInput(objective);
+        handleSubmit();
+        CheckFields();
+    };
+
     return (
         <>
+            <Dialog open={objectiveOpen} onClose={HandleObjectiveClose}>
+                <DialogTitle>目標が抽象的すぎます</DialogTitle>
+                <DialogActions>
+                    <Button onClick={HandleObjectiveClose}>閉じる</Button>
+                </DialogActions>
+            </Dialog>
             <Dialog open={open} onClose={HandleClose}>
                 <DialogTitle>入力していないフィールドがあります</DialogTitle>
                 <DialogActions>
@@ -239,7 +271,7 @@ export default function CreateField({ date, selectDate }: Props) {
                     >
                         戻る
                     </Button>
-                    <Button variant="contained" sx={{ fontSize: "1.4rem" }} onClick={CheckFields}>
+                    <Button variant="contained" sx={{ fontSize: "1.4rem" }} onClick={HandleEvent}>
                         スケジュールを登録する
                     </Button>
                 </div>
