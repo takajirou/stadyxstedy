@@ -29,8 +29,8 @@ export default function CreateField({ date, selectDate }: Props) {
     const [breakTime, setBreakTime] = useState(0);
     const [breakCount, setBreakCount] = useState(0);
     const [open, setOpen] = useState(false);
-    const [input, setInput] = useState("");
-    const [response, setResponse] = useState("");
+    // const [input, setInput] = useState("");
+    // const [response, setResponse] = useState("");
     const [objectiveOpen, setObjectiveOpen] = useState(false);
     let CreateDate;
 
@@ -63,19 +63,19 @@ export default function CreateField({ date, selectDate }: Props) {
             console.error("Error inserting data:", error);
         }
 
-        // router.push("/home");
+        router.push("/home");
     };
 
-    const handleSubmit = async () => {
-        const res = await fetch("/api/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: input }),
-        });
-        const data = await res.json();
-        console.log(data.result);
-        setResponse(data.result);
-    };
+    // const handleSubmit = async () => {
+    //     const res = await fetch("/api/chat", {
+    //         method: "POST",
+    //         headers: { "Content-Type": "application/json" },
+    //         body: JSON.stringify({ message: input }),
+    //     });
+    //     const data = await res.json();
+    //     console.log(data.result);
+    //     setResponse(data.result);
+    // };
 
     const CheckFields = () => {
         if (
@@ -86,9 +86,9 @@ export default function CreateField({ date, selectDate }: Props) {
             breakCount === 0
         ) {
             setOpen(true);
-        } else if (response === "いいえ") {
+        } /*else if (response === "いいえ") {
             setObjectiveOpen(true);
-        } else {
+        }*/ else {
             CreateSchedule();
         }
     };
@@ -102,8 +102,8 @@ export default function CreateField({ date, selectDate }: Props) {
     };
 
     const HandleEvent = () => {
-        setInput(objective);
-        handleSubmit();
+        // setInput(objective);
+        // handleSubmit();
         CheckFields();
     };
 
