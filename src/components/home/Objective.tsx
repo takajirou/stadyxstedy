@@ -57,7 +57,10 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
     }, [fetching]);
 
     const deleteObjective = async (size: string) => {
-        const { error } = await supabase.from("Objectives").update({ Size: "" }).eq("Size", size);
+        const { error } = await supabase
+            .from("Objectives")
+            .update({ Objective: "" })
+            .eq("Size", size);
         if (error) {
             console.log("目標なし");
         }
