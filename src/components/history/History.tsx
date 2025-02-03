@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@lib/supabaseClient";
 import styles from "@styles/componentStyles/history/History.module.scss";
+import { MdOutlineArrowForwardIos } from "react-icons/md";
 
 interface Schedule {
     id: number;
@@ -56,27 +57,30 @@ export default function HistoryPage({ id }: HistoryProps) {
             {history ? (
                 <>
                     <div className={styles.Content}>
-                        <h2>
-                            {history.date}({weekday})
-                        </h2>
-                        <p>
-                            <span>目標:</span>
-                            {history.object}
-                        </p>
-                        <p>
-                            <span>学習時間:</span>
-                            {history.studyMinutes < 60
-                                ? `${history.studyMinutes}分`
-                                : `${Math.floor(history.studyMinutes / 60)}時間 ${
-                                      history.studyMinutes % 60 === 0
-                                          ? ""
-                                          : ` ${history.studyMinutes % 60}分`
-                                  }`}
-                        </p>
-                        <p>
-                            <span>目標:</span>
-                            {history.Achievement === "Achieved" ? "達成" : "未達成"}
-                        </p>
+                        <div>
+                            <h2>
+                                {history.date}({weekday})
+                            </h2>
+                            <p>
+                                <span>目標:</span>
+                                {history.object}
+                            </p>
+                            <p>
+                                <span>学習時間:</span>
+                                {history.studyMinutes < 60
+                                    ? `${history.studyMinutes}分`
+                                    : `${Math.floor(history.studyMinutes / 60)}時間 ${
+                                          history.studyMinutes % 60 === 0
+                                              ? ""
+                                              : ` ${history.studyMinutes % 60}分`
+                                      }`}
+                            </p>
+                            <p>
+                                <span>目標:</span>
+                                {history.Achievement === "Achieved" ? "達成" : "未達成"}
+                            </p>
+                        </div>
+                        <MdOutlineArrowForwardIos size="25px" color="blue" />
                     </div>
                 </>
             ) : (
