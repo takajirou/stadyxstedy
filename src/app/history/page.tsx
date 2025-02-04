@@ -34,8 +34,8 @@ export default function HistoryPage() {
             }
         };
 
-        setLoading(false);
         fetchHistory();
+        setLoading(false);
     }, []);
 
     return (
