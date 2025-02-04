@@ -4,6 +4,7 @@ import { useEffect, useState, use } from "react";
 import { supabase } from "@lib/supabaseClient";
 import Link from "next/link";
 import { IoIosArrowBack } from "react-icons/io";
+import Loading from "@/components/Loading";
 import styles from "@styles/appStyles/history/HistoryPage.module.scss";
 
 interface HistoryDetailProps {
@@ -43,7 +44,7 @@ export default function HistoryDetail({ params }: HistoryDetailProps) {
         };
 
         fetchHistory();
-    });
+    }, [id]);
 
     function getWeekday(dateString?: string) {
         if (!dateString) return;
@@ -65,8 +66,17 @@ export default function HistoryDetail({ params }: HistoryDetailProps) {
                     {history?.date}({weekday})
                 </h1>
             </header>
+            {!history ? (
+                <Loading />
+            ) : (
+                <>
+                    <h3>目標</h3>
+                    <p>{history?.object}</p>
 
-            <p></p>
+                    <h3>目標の達成状況</h3>
+                    <p>{history?.Achievement === "NoAchieved" ? "未達成" : "達成"}</p>
+                </>
+            )}
         </div>
     );
 }
