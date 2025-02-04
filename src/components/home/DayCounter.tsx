@@ -14,11 +14,19 @@ export default function DayCounter() {
 
     useEffect(() => {
         const fetchCounter = async () => {
-            const { data, error } = await supabase.from("DayCounter").select("Count").single();
+            const { data, error } = await supabase
+                .from("DayCounter")
+                .select("*")
+                .eq("id", 1)
+                .single();
+
             if (error) {
-                console.error("Failed to fetch counter", error);
-            } else {
-                setCount(data?.Count || null);
+                console.error(error);
+                return;
+            }
+
+            if (data) {
+                setCount(data.Count);
             }
         };
 
