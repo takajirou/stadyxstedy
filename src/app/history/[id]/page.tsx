@@ -22,6 +22,7 @@ interface Schedule {
     Achievement: string;
     date: string;
     state: string;
+    studyReview: string;
 }
 
 export default function HistoryDetail({ params }: HistoryDetailProps) {
@@ -69,13 +70,48 @@ export default function HistoryDetail({ params }: HistoryDetailProps) {
             {!history ? (
                 <Loading />
             ) : (
-                <>
-                    <h3>目標</h3>
-                    <p>{history?.object}</p>
-
-                    <h3>目標の達成状況</h3>
-                    <p>{history?.Achievement === "NoAchieved" ? "未達成" : "達成"}</p>
-                </>
+                <div className={styles.Content}>
+                    <div>
+                        <h3>目標</h3>
+                        <p>{history?.object}</p>
+                    </div>
+                    <div>
+                        <h3>目標の達成状況</h3>
+                        <p>{history?.Achievement === "NoAchieved" ? "未達成" : "達成"}</p>
+                    </div>
+                    <div>
+                        <h3>学習予定時間</h3>
+                        <p>
+                            {history.studyTime < 60
+                                ? `${history.studyTime}分`
+                                : `${Math.floor(history.studyTime / 60)}時間 ${
+                                      history.studyTime % 60 === 0
+                                          ? ""
+                                          : ` ${history.studyTime % 60}分`
+                                  }`}
+                        </p>
+                    </div>
+                    <div>
+                        <h3>学習時間</h3>
+                        <p>
+                            {history.studyMinutes < 60
+                                ? `${history.studyMinutes}分`
+                                : `${Math.floor(history.studyMinutes / 60)}時間 ${
+                                      history.studyMinutes % 60 === 0
+                                          ? ""
+                                          : ` ${history.studyMinutes % 60}分`
+                                  }`}
+                        </p>
+                    </div>
+                    <div>
+                        <h3>学習内容</h3>
+                        <p>{history.studyContent}</p>
+                    </div>
+                    <div className={styles.summary}>
+                        <h3>学習のまとめ</h3>
+                        <p>{history.studyReview === "" ? "未入力" : history.studyReview}</p>
+                    </div>
+                </div>
             )}
         </div>
     );
