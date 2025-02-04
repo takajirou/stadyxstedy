@@ -80,7 +80,7 @@ export default function HistoryPage({ id }: HistoryProps) {
                                 {history.Achievement === "Achieved" ? "達成" : "未達成"}
                             </p>
                         </div>
-                        <MdOutlineArrowForwardIos size="25px" color="blue" />
+                        <MdOutlineArrowForwardIos size="25px" color="#7194e1" />
                     </div>
                 </>
             ) : (
