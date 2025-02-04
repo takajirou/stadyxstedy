@@ -41,6 +41,7 @@ export default function HistoryPage() {
     return (
         <main>
             <Header />
+            <h1 className={styles.title}>勉強の履歴</h1>
             {loading ? (
                 <Loading />
             ) : history.length > 0 ? (
