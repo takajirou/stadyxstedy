@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
                 },
                 { role: "user", content: message },
             ],
-            max_tokens: 2,
+            max_tokens: 3,
             temperature: 0,
         });
 

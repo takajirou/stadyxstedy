@@ -29,8 +29,6 @@ export default function CreateField({ date, selectDate }: Props) {
     const [breakTime, setBreakTime] = useState(0);
     const [breakCount, setBreakCount] = useState(0);
     const [open, setOpen] = useState(false);
-    // const [input, setInput] = useState("");
-    // const [response, setResponse] = useState("");
     const [objectiveOpen, setObjectiveOpen] = useState(false);
     let CreateDate;
 
@@ -66,16 +64,20 @@ export default function CreateField({ date, selectDate }: Props) {
         router.push("/home");
     };
 
-    // const handleSubmit = async () => {
-    //     const res = await fetch("/api/chat", {
-    //         method: "POST",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify({ message: input }),
-    //     });
-    //     const data = await res.json();
-    //     console.log(data.result);
-    //     setResponse(data.result);
-    // };
+    const handleSubmit = async (objective: string) => {
+        const res = await fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: objective }),
+        });
+        const data = await res.json();
+        console.log(data.result);
+        if (data.result === "はい") {
+            CreateSchedule();
+        } else {
+            setObjectiveOpen(true);
+        }
+    };
 
     const CheckFields = () => {
         if (
@@ -86,10 +88,8 @@ export default function CreateField({ date, selectDate }: Props) {
             breakCount === 0
         ) {
             setOpen(true);
-        } /*else if (response === "いいえ") {
-            setObjectiveOpen(true);
-        }*/ else {
-            CreateSchedule();
+        } else {
+            HandleEvent();
         }
     };
 
@@ -102,15 +102,13 @@ export default function CreateField({ date, selectDate }: Props) {
     };
 
     const HandleEvent = () => {
-        // setInput(objective);
-        // handleSubmit();
-        CheckFields();
+        handleSubmit(objective);
     };
 
     return (
         <>
             <Dialog open={objectiveOpen} onClose={HandleObjectiveClose}>
-                <DialogTitle>目標が抽象的すぎます</DialogTitle>
+                <DialogTitle>もっと具体的な目標をつけよう！</DialogTitle>
                 <DialogActions>
                     <Button onClick={HandleObjectiveClose}>閉じる</Button>
                 </DialogActions>
@@ -271,7 +269,7 @@ export default function CreateField({ date, selectDate }: Props) {
                     >
                         戻る
                     </Button>
-                    <Button variant="contained" sx={{ fontSize: "1.4rem" }} onClick={HandleEvent}>
+                    <Button variant="contained" sx={{ fontSize: "1.4rem" }} onClick={CheckFields}>
                         スケジュールを登録する
                     </Button>
                 </div>
