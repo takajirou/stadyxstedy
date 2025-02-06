@@ -20,38 +20,29 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
     const [grandObjective, setGrandObjective] = useState<Objectives | null>(null);
     const [weekObjective, setWeekObjective] = useState<Objectives | null>(null);
 
+    const fetchGrandObjectives = async () => {
+        const { data } = await supabase.from("Objectives").select("*").eq("Size", "grand").single();
+        return data;
+    };
+
+    const fetchWeekObjectives = async () => {
+        const { data } = await supabase.from("Objectives").select("*").eq("Size", "week").single();
+        return data;
+    };
+
+    const fetchObjectives = async () => {
+        const [grandData, weekData] = await Promise.all([
+            fetchGrandObjectives(),
+            fetchWeekObjectives(),
+        ]);
+
+        if (grandData) setGrandObjective(grandData);
+        if (weekData) setWeekObjective(weekData);
+    };
+
     useEffect(() => {
-        const fetchGrandObjectives = async () => {
-            const { data } = await supabase
-                .from("Objectives")
-                .select("*")
-                .eq("Size", "grand")
-                .single();
-
-            return data;
-        };
-
-        const fetchWeekObjectives = async () => {
-            const { data } = await supabase
-                .from("Objectives")
-                .select("*")
-                .eq("Size", "week")
-                .single();
-
-            return data;
-        };
-
-        const fetchObjectives = async () => {
-            const [grandData, weekData] = await Promise.all([
-                fetchGrandObjectives(),
-                fetchWeekObjectives(),
-            ]);
-
-            if (grandData) setGrandObjective(grandData);
-            if (weekData) setWeekObjective(weekData);
-        };
-
         fetchObjectives();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const deleteObjective = async (size: string) => {
@@ -61,6 +52,8 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
             .eq("Size", size);
         if (error) {
             console.log("目標なし");
+        } else {
+            fetchObjectives();
         }
     };
 
