@@ -28,6 +28,7 @@ export default function Schedule({ fetchDate }: Props) {
     const [studyMinutes, setStudyMinutes] = useState<number>();
 
     const fetchSchedules = useCallback(async () => {
+        console.log("fetch");
         const needDate = new Date();
         try {
             if (fetchDate === "tomorrow") {
