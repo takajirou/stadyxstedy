@@ -27,11 +27,13 @@ export default function Schedule({ fetchDate }: Props) {
     const [studyHours, setStudyHours] = useState<number>();
     const [studyMinutes, setStudyMinutes] = useState<number>();
 
+    const [currentFetchDate, setCurrentFetchDate] = useState(fetchDate);
+
     const fetchSchedules = useCallback(async () => {
         console.log("fetch");
         const needDate = new Date();
         try {
-            if (fetchDate === "tomorrow") {
+            if (currentFetchDate === "tomorrow") {
                 needDate.setDate(needDate.getDate() + 1);
             }
             const { data, error } = await supabase
@@ -50,11 +52,15 @@ export default function Schedule({ fetchDate }: Props) {
             console.log("Error fetching schedules:", error);
             setSchedule(null);
         }
+    }, [currentFetchDate]); // fetchDate の代わりに currentFetchDate を使用
+
+    useEffect(() => {
+        setCurrentFetchDate(fetchDate); // fetchDate が変わったら state を更新
     }, [fetchDate]);
 
     useEffect(() => {
         fetchSchedules();
-    }, [fetchSchedules]);
+    }, [fetchSchedules]); // fetchSchedules の deps が変わらないので無限ループしない
 
     useEffect(() => {
         if (schedule) {
