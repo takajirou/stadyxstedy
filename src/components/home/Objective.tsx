@@ -19,7 +19,6 @@ type ObjectiveProps = {
 export default function ObjectivesPage({ Objective }: ObjectiveProps) {
     const [grandObjective, setGrandObjective] = useState<Objectives | null>(null);
     const [weekObjective, setWeekObjective] = useState<Objectives | null>(null);
-    const [fetching, setFetching] = useState(true);
 
     useEffect(() => {
         const fetchGrandObjectives = async () => {
@@ -53,8 +52,7 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
         };
 
         fetchObjectives();
-        setFetching(false);
-    }, [fetching]);
+    }, []);
 
     const deleteObjective = async (size: string) => {
         const { error } = await supabase
@@ -64,8 +62,6 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
         if (error) {
             console.log("目標なし");
         }
-
-        setFetching(true);
     };
 
     return (
