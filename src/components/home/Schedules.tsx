@@ -29,17 +29,26 @@ export default function Schedule({ fetchDate }: Props) {
     useEffect(() => {
         const needDate = new Date();
         const fetchSchedules = async () => {
-            if (fetchDate === "tomorrow") {
-                needDate.setDate(needDate.getDate() + 1);
-            }
-            const { data } = await supabase
-                .from("Schedule")
-                .select("*")
-                .eq("date", needDate.toISOString().split("T")[0])
-                .eq("state", "unfinished")
-                .single();
+            try {
+                if (fetchDate === "tomorrow") {
+                    needDate.setDate(needDate.getDate() + 1);
+                }
+                const { data, error } = await supabase
+                    .from("Schedule")
+                    .select("*")
+                    .eq("date", needDate.toISOString().split("T")[0])
+                    .eq("state", "unfinished")
+                    .single();
 
-            setSchedule(data || null);
+                if (error) {
+                    throw error;
+                }
+
+                setSchedule(data || null);
+            } catch (error) {
+                console.error("Error fetching schedules:", error);
+                setSchedule(null);
+            }
         };
 
         fetchSchedules();
