@@ -10,7 +10,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 let requestCount = 0;
-const MAX_REQUESTS = 100; // 例: 1セッションで最大100回のリクエストに制限
+const MAX_REQUESTS = 10; // 例: 1セッションで最大100回のリクエストに制限
 
 export const limitedSupabase = new Proxy(supabase, {
     get(target, prop: keyof SupabaseClient) {
