@@ -71,7 +71,6 @@ export default function CreateField({ date, selectDate }: Props) {
             body: JSON.stringify({ message: objective }),
         });
         const data = await res.json();
-        console.log(data.result);
         if (data.result === "はい") {
             CreateSchedule();
         } else {
