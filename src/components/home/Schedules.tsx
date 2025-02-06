@@ -2,7 +2,6 @@
 
 import styles from "@styles/componentStyles/home/Schedule.module.scss";
 import clsx from "clsx";
-import { useCallback } from "react";
 import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import { supabase } from "@lib/supabaseClient";
@@ -27,40 +26,34 @@ export default function Schedule({ fetchDate }: Props) {
     const [studyHours, setStudyHours] = useState<number>();
     const [studyMinutes, setStudyMinutes] = useState<number>();
 
-    const [currentFetchDate, setCurrentFetchDate] = useState(fetchDate);
-
-    const fetchSchedules = useCallback(async () => {
-        console.log("fetch");
-        const needDate = new Date();
-        try {
-            if (currentFetchDate === "tomorrow") {
-                needDate.setDate(needDate.getDate() + 1);
-            }
-            const { data, error } = await supabase
-                .from("Schedule")
-                .select("*")
-                .eq("date", needDate.toISOString().split("T")[0])
-                .eq("state", "unfinished")
-                .single();
-
-            if (error) {
-                throw error;
-            }
-
-            setSchedule(data || null);
-        } catch (error) {
-            console.log("Error fetching schedules:", error);
-            setSchedule(null);
-        }
-    }, [currentFetchDate]); // fetchDate の代わりに currentFetchDate を使用
-
     useEffect(() => {
-        setCurrentFetchDate(fetchDate); // fetchDate が変わったら state を更新
-    }, [fetchDate]);
+        const fetchSchedules = async () => {
+            console.log("fetch");
+            const needDate = new Date();
+            try {
+                if (fetchDate === "tomorrow") {
+                    needDate.setDate(needDate.getDate() + 1);
+                }
+                const { data, error } = await supabase
+                    .from("Schedule")
+                    .select("*")
+                    .eq("date", needDate.toISOString().split("T")[0])
+                    .eq("state", "unfinished")
+                    .single();
 
-    useEffect(() => {
+                if (error) {
+                    throw error;
+                }
+
+                setSchedule(data || null);
+            } catch (error) {
+                console.log("Error fetching schedules:", error);
+                setSchedule(null);
+            }
+        };
+
         fetchSchedules();
-    }, [fetchSchedules]); // fetchSchedules の deps が変わらないので無限ループしない
+    }, [fetchDate]); // fetchDate のみを監視
 
     useEffect(() => {
         if (schedule) {
