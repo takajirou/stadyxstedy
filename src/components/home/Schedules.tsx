@@ -46,7 +46,7 @@ export default function Schedule({ fetchDate }: Props) {
 
                 setSchedule(data || null);
             } catch (error) {
-                console.error("Error fetching schedules:", error);
+                console.log("Error fetching schedules:", error);
                 setSchedule(null);
             }
         };
