@@ -2,6 +2,7 @@
 
 import styles from "@styles/componentStyles/home/Schedule.module.scss";
 import clsx from "clsx";
+import { useCallback } from "react";
 import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import { supabase } from "@lib/supabaseClient";
@@ -26,33 +27,33 @@ export default function Schedule({ fetchDate }: Props) {
     const [studyHours, setStudyHours] = useState<number>();
     const [studyMinutes, setStudyMinutes] = useState<number>();
 
-    useEffect(() => {
+    const fetchSchedules = useCallback(async () => {
         const needDate = new Date();
-        const fetchSchedules = async () => {
-            try {
-                if (fetchDate === "tomorrow") {
-                    needDate.setDate(needDate.getDate() + 1);
-                }
-                const { data, error } = await supabase
-                    .from("Schedule")
-                    .select("*")
-                    .eq("date", needDate.toISOString().split("T")[0])
-                    .eq("state", "unfinished")
-                    .single();
-
-                if (error) {
-                    throw error;
-                }
-
-                setSchedule(data || null);
-            } catch (error) {
-                console.log("Error fetching schedules:", error);
-                setSchedule(null);
+        try {
+            if (fetchDate === "tomorrow") {
+                needDate.setDate(needDate.getDate() + 1);
             }
-        };
+            const { data, error } = await supabase
+                .from("Schedule")
+                .select("*")
+                .eq("date", needDate.toISOString().split("T")[0])
+                .eq("state", "unfinished")
+                .single();
 
-        fetchSchedules();
+            if (error) {
+                throw error;
+            }
+
+            setSchedule(data || null);
+        } catch (error) {
+            console.log("Error fetching schedules:", error);
+            setSchedule(null);
+        }
     }, [fetchDate]);
+
+    useEffect(() => {
+        fetchSchedules();
+    }, [fetchSchedules]);
 
     useEffect(() => {
         if (schedule) {
