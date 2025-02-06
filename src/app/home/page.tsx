@@ -11,7 +11,7 @@ export default function Home() {
             <div className={styles.PageWrap}>
                 <Objective Objective="grand" />
                 <Objective Objective="week" />
-                <WrapSchedule />
+                {/* <WrapSchedule /> */}
                 {/* <DayCounter /> */}
             </div>
         </>
