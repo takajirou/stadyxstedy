@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@lib/supabaseClient";
 import Link from "next/link";
 import { IoIosArrowBack } from "react-icons/io";
@@ -28,8 +28,16 @@ interface Schedule {
 export default function HistoryDetail({ params }: HistoryDetailProps) {
     const [history, setHistory] = useState<Schedule | null>(null);
     const [weekday, setWeekday] = useState<string | null>(null);
-    const { id } = use(params);
+    const [id, setId] = useState<string | null>(null);
+
     useEffect(() => {
+        params.then((resolvedParams) => {
+            setId(resolvedParams.id);
+        });
+    }, [params]);
+
+    useEffect(() => {
+        if (!id) return;
         const fetchHistory = async () => {
             const { data, error } = await supabase
                 .from("Schedule")
@@ -55,7 +63,7 @@ export default function HistoryDetail({ params }: HistoryDetailProps) {
     }
     useEffect(() => {
         getWeekday(history?.date);
-    }, [history]);
+    }, [history?.date]);
 
     return (
         <div>

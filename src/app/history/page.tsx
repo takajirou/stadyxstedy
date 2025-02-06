@@ -32,10 +32,10 @@ export default function HistoryPage() {
             } else {
                 setHistory(data);
             }
+            setLoading(false);
         };
 
         fetchHistory();
-        setLoading(false);
     }, []);
 
     return (

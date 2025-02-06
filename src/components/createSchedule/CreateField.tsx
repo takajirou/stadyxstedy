@@ -41,7 +41,10 @@ export default function CreateField({ date, selectDate }: Props) {
     }
 
     useEffect(() => {
-        setStudyTime(studyHours * 60 + studyMinutes);
+        setStudyTime((prev) => {
+            const newTime = studyHours * 60 + studyMinutes;
+            return prev !== newTime ? newTime : prev;
+        });
     }, [studyHours, studyMinutes]);
 
     const CreateSchedule = async () => {

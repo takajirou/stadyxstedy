@@ -10,6 +10,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { Dialog, DialogActions, Button, DialogTitle } from "@mui/material";
 import { useState, useEffect } from "react";
+import { useCallback } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
 interface Schedule {
@@ -31,15 +32,14 @@ export default function Footer() {
     const [openAlreadySchedule, setOpenAlreadySchedule] = useState(false);
     const today = new Date().toISOString().split("T")[0];
 
+    const fetchData = useCallback(async () => {
+        const scheduleRes = await supabase.from("Schedule").select("*").eq("date", today).single();
+        setData(scheduleRes ? scheduleRes.data : null);
+    }, [today]);
+
     useEffect(() => {
         fetchData();
-    });
-
-    const fetchData = async () => {
-        const scheduleRes = await supabase.from("Schedule").select("*").eq("date", today).single();
-
-        setData(scheduleRes ? scheduleRes.data : null);
-    };
+    }, [fetchData]);
 
     const handleClickOpen = () => {
         setOpen(true);
