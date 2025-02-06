@@ -25,11 +25,11 @@ interface Schedule {
 
 export default function Footer() {
     const pathname = usePathname();
-    const today = new Date().toISOString().split("T")[0];
     const [data, setData] = useState<Schedule>();
     const [open, setOpen] = useState(false);
     const [openNoneSchedule, setOpenNoneSchedule] = useState(false);
     const [openAlreadySchedule, setOpenAlreadySchedule] = useState(false);
+    const today = new Date().toISOString().split("T")[0];
 
     useEffect(() => {
         fetchData();

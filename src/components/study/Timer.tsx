@@ -14,7 +14,6 @@ import clsx from "clsx";
 import { useRef } from "react";
 
 export default function Timer() {
-    const today = new Date().toISOString().split("T")[0];
     const [totalStudyHours, setTotalStudyHours] = useState<number | null>(null);
     const [breakMinutes, setBreakMinutes] = useState<number | null>(null);
     const [breakCount, setBreakCount] = useState<number | null>(null);
@@ -29,6 +28,7 @@ export default function Timer() {
     const studyStartTime = useRef<number | null>(null);
 
     useEffect(() => {
+        const today = new Date().toISOString().split("T")[0];
         const fetchScheduleData = async () => {
             try {
                 const { data, error } = await supabase
@@ -57,7 +57,7 @@ export default function Timer() {
         };
 
         fetchScheduleData();
-    }, [today]);
+    }, []);
 
     useEffect(() => {
         if (time > 0 && !isPaused) {

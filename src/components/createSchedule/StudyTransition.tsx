@@ -23,7 +23,6 @@ interface StudyTransitionProps {
 }
 
 export default function StudyTransition({ onScheduleCreate }: StudyTransitionProps) {
-    const today = new Date().toISOString().split("T")[0];
     const [todaySchedule, setTodaySchedule] = useState<Schedule | null>(null);
     const [tomorrowSchedule, setTomorrowSchedule] = useState<Schedule | null>(null);
     const [todayOpen, setTodayOpen] = useState(false);
@@ -31,6 +30,7 @@ export default function StudyTransition({ onScheduleCreate }: StudyTransitionPro
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const today = new Date().toISOString().split("T")[0];
         const fetchData = async () => {
             const { data: todayData } = await supabase
                 .from("Schedule")
@@ -52,7 +52,7 @@ export default function StudyTransition({ onScheduleCreate }: StudyTransitionPro
 
         setLoading(false);
         fetchData();
-    }, [today]);
+    }, []);
 
     const todayHandleClick = (value: string) => {
         if (value === "today" && todaySchedule) {
