@@ -48,37 +48,53 @@ export default function CreateField({ date, selectDate }: Props) {
     }, [studyHours, studyMinutes]);
 
     const CreateSchedule = async () => {
-        const { error } = await supabase.from("Schedule").insert([
-            {
-                date: CreateDate,
-                studyTime: studyTime,
-                breakTime: breakTime,
-                breakCount: breakCount,
-                object: objective,
-                studyContent: studyContent,
-                state: "unfinished",
-            },
-        ]);
+        try {
+            const { error } = await supabase.from("Schedule").insert([
+                {
+                    date: CreateDate,
+                    studyTime: studyTime,
+                    breakTime: breakTime,
+                    breakCount: breakCount,
+                    object: objective,
+                    studyContent: studyContent,
+                    state: "unfinished",
+                },
+            ]);
 
-        if (error) {
-            console.error("Error inserting data:", error);
+            if (error) {
+                console.error("データ挿入エラー:", error);
+                alert("データ挿入エラー: " + error.message);
+            } else {
+                // console.log("スケジュールが正常に作成されました");
+                // alert("スケジュールが正常に作成されました");
+                router.push("/home");
+            }
+        } catch (err) {
+            const errorMessage = (err as Error).message;
+            console.error("予期しないエラー:", errorMessage);
+            alert("予期しないエラー: " + errorMessage);
         }
-
-        router.push("/home");
     };
 
     const handleSubmit = async (objective: string) => {
-        const res = await fetch("/api/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: objective }),
-        });
-        const data = await res.json();
-        console.log(data.result);
-        if (data.result === "はい") {
-            CreateSchedule();
-        } else {
-            setObjectiveOpen(true);
+        try {
+            const res = await fetch("/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: objective }),
+            });
+            const data = await res.json();
+            console.log("Chat APIの応答:", data);
+
+            if (data.result === "はい") {
+                CreateSchedule();
+            } else {
+                setObjectiveOpen(true);
+            }
+        } catch (err) {
+            const errorMessage = (err as Error).message;
+            console.error("handleSubmit内のエラー:", errorMessage);
+            alert("handleSubmit内のエラー: " + errorMessage);
         }
     };
 
