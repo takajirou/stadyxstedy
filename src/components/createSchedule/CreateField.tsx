@@ -229,10 +229,10 @@ export default function CreateField({ date, selectDate }: Props) {
                         onChange={(e) => setObjective(e.target.value)}
                         variant="outlined"
                         placeholder="例）英語過去問で80点以上取れるようにする"
-                        helperText="最大50文字"
+                        helperText="最大20文字"
                         InputLabelProps={{ shrink: true }}
                         inputProps={{
-                            maxLength: 50,
+                            maxLength: 20,
                             style: { fontSize: "1.5rem" },
                         }}
                         sx={{
