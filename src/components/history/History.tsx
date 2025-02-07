@@ -53,7 +53,7 @@ export default function HistoryPage({ id }: HistoryProps) {
     }, [history]);
 
     return (
-        <main>
+        <div className={styles.Wrap}>
             {history ? (
                 <>
                     <div className={styles.Content}>
@@ -86,6 +86,6 @@ export default function HistoryPage({ id }: HistoryProps) {
             ) : (
                 ""
             )}
-        </main>
+        </div>
     );
 }
