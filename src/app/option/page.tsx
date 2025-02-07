@@ -20,7 +20,7 @@ export default function Page() {
     return (
         <div className={styles.optionWrap}>
             <h1>Option Page</h1>
-            <button onClick={DeleteSchedule}>unfinished</button>
+            <button onClick={DeleteSchedule}>リセット</button>
         </div>
     );
 }
