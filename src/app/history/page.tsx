@@ -27,10 +27,12 @@ export default function HistoryPage() {
                 .from("Schedule")
                 .select("*")
                 .eq("state", "finished");
+
             if (error) {
                 console.error("Error fetching history:", error.message);
             } else {
-                setHistory(data);
+                const sortedData = data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+                setHistory(sortedData);
             }
             setLoading(false);
         };
