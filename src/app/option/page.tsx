@@ -1,4 +1,5 @@
 "use client";
+import styles from "@styles/appStyles/option/Page.module.scss";
 
 import { supabase } from "@/lib/supabaseClient";
 
@@ -17,7 +18,7 @@ export default function Page() {
     };
 
     return (
-        <div>
+        <div className={styles.optionWrap}>
             <h1>Option Page</h1>
             <button onClick={DeleteSchedule}>unfinished</button>
         </div>
