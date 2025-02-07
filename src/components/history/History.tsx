@@ -53,7 +53,7 @@ export default function HistoryPage({ id }: HistoryProps) {
     }, [history]);
 
     return (
-        <div className={styles.Wrap}>
+        <div>
             {history ? (
                 <>
                     <div className={styles.Content}>

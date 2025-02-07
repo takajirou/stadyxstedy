@@ -39,7 +39,7 @@ export default function HistoryPage() {
     }, []);
 
     return (
-        <main>
+        <main className={styles.Wrap}>
             <Header />
             <h1 className={styles.title}>勉強の履歴</h1>
             {loading ? (
