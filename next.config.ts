@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
-    output: "export", // 静的サイトとしてエクスポート
     images: {
         unoptimized: true, // 画像最適化を無効化 (next/image を使用している場合)
     },
