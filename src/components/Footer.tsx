@@ -9,8 +9,7 @@ import { BsClockHistory } from "react-icons/bs";
 import clsx from "clsx";
 import Link from "next/link";
 import { Dialog, DialogActions, Button, DialogTitle } from "@mui/material";
-import { useState, useEffect } from "react";
-import { useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
 interface Schedule {
@@ -33,12 +32,24 @@ export default function Footer() {
     const today = new Date().toISOString().split("T")[0];
 
     const fetchData = useCallback(async () => {
-        const scheduleRes = await supabase.from("Schedule").select("*").eq("date", today).single();
-        setData(scheduleRes ? scheduleRes.data : null);
+        const { data, error } = await supabase
+            .from("Schedule")
+            .select("*")
+            .eq("date", today)
+            .single();
+        if (error) {
+            console.log("Error fetching schedule data:", error);
+        }
+        return data || null;
     }, [today]);
+    console.log(data);
 
     useEffect(() => {
-        fetchData();
+        const fetchInitialData = async () => {
+            const initialData = await fetchData();
+            setData(initialData);
+        };
+        fetchInitialData();
     }, [fetchData]);
 
     const handleClickOpen = () => {
@@ -66,9 +77,9 @@ export default function Footer() {
     };
 
     const handleStartStudy = async () => {
-        await fetchData();
-        if (data) {
-            if (data.state === "finished") {
+        const currentData = await fetchData();
+        if (currentData) {
+            if (currentData.state === "finished") {
                 handleOpenAlreadySchedule();
             } else {
                 handleClickOpen();
