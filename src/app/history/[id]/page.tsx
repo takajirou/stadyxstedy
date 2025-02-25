@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@lib/supabaseClient";
 import Link from "next/link";
 import { IoIosArrowBack } from "react-icons/io";
@@ -55,15 +55,16 @@ export default function HistoryDetail({ params }: HistoryDetailProps) {
         fetchHistory();
     }, [id]);
 
-    function getWeekday(dateString?: string) {
+    const getWeekday = useCallback((dateString?: string) => {
         if (!dateString) return;
         const days = ["日", "月", "火", "水", "木", "金", "土"];
         const date = new Date(dateString);
         setWeekday(days[date.getDay()]);
-    }
+    }, []);
+
     useEffect(() => {
         getWeekday(history?.date);
-    }, [history?.date]);
+    }, [history?.date, getWeekday]);
 
     return (
         <div>

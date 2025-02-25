@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@lib/supabaseClient";
 import styles from "@styles/componentStyles/history/History.module.scss";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
@@ -24,33 +24,35 @@ interface HistoryProps {
 export default function HistoryPage({ id }: HistoryProps) {
     const [history, setHistory] = useState<Schedule | null>(null);
     const [weekday, setWeekday] = useState<string | null>(null);
+
+    const fetchHistory = useCallback(async () => {
+        const { data, error } = await supabase
+            .from("Schedule")
+            .select("*")
+            .eq("state", "finished")
+            .eq("id", id)
+            .single();
+        if (error) {
+            console.error("Error fetching history:", error.message);
+        } else {
+            setHistory(data);
+        }
+    }, [id]);
+
     useEffect(() => {
-        const fetchHistory = async () => {
-            const { data, error } = await supabase
-                .from("Schedule")
-                .select("*")
-                .eq("state", "finished")
-                .eq("id", id)
-                .single();
-            if (error) {
-                console.error("Error fetching history:", error.message);
-            } else {
-                setHistory(data);
-            }
-        };
-
         fetchHistory();
-    });
+    }, [fetchHistory]);
 
-    function getWeekday(dateString?: string) {
+    const getWeekday = useCallback((dateString?: string) => {
         if (!dateString) return;
         const days = ["日", "月", "火", "水", "木", "金", "土"];
         const date = new Date(dateString);
         setWeekday(days[date.getDay()]);
-    }
+    }, []);
+
     useEffect(() => {
         getWeekday(history?.date);
-    }, [history]);
+    }, [history?.date, getWeekday]);
 
     return (
         <div>

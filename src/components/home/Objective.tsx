@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { LuPencil } from "react-icons/lu";
 import clsx from "clsx";
 import styles from "@styles/componentStyles/home/Objective.module.scss";
@@ -7,11 +7,13 @@ import Link from "next/link";
 import { Button } from "@mui/material";
 import { supabase } from "@lib/supabaseClient";
 import { GoTrash } from "react-icons/go";
+
 interface Objectives {
     id: number;
     Objective: string;
     Size: string;
 }
+
 type ObjectiveProps = {
     Objective: string;
 };
@@ -30,7 +32,7 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
         return data;
     };
 
-    const fetchObjectives = async () => {
+    const fetchObjectives = useCallback(async () => {
         const [grandData, weekData] = await Promise.all([
             fetchGrandObjectives(),
             fetchWeekObjectives(),
@@ -38,12 +40,11 @@ export default function ObjectivesPage({ Objective }: ObjectiveProps) {
 
         if (grandData) setGrandObjective(grandData);
         if (weekData) setWeekObjective(weekData);
-    };
+    }, []);
 
     useEffect(() => {
         fetchObjectives();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [fetchObjectives]);
 
     const deleteObjective = async (size: string) => {
         const { error } = await supabase
